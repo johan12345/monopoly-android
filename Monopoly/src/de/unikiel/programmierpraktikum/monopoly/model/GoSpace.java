@@ -8,5 +8,5 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  * Speichert die Eigenschaften des LOS-Feldes auf dem Spielfeld
  */
 public class GoSpace extends Space {
-
+	
 }

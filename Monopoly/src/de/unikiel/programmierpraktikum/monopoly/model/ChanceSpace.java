@@ -8,5 +8,5 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  * Speichert die Eigenschaften eines Ereignisfeldes auf dem Spielfeld
  */
 public abstract class ChanceSpace extends Space {
-
+	
 }
