@@ -1,0 +1,94 @@
+[
+
+    {
+    "type":"PayChanceCard",
+    "text":"Sie haben einen Nobelpreis gewonnen (Herzlichen Glückwunsch). Sie erhalten 2000 eV.",
+    "payamount":-2000
+    },
+    
+    {
+    "type":"PayRenovationChanceCard",
+    "text":"Sie haben versehentlich schwarze Löcher generiert und all Ihre Immobilien zerstört. Renovieren Sie sie: 500eV pro Haus und 2000eV pro Hotel.",
+    "payamount":[500 2000]
+    },
+
+
+    {
+    "type":"MoveToChanceCard",
+    "text":"Ihre zunächst vielversprechende Theorie ist völlig falsch. Fangen Sie von vorn an und gehen Sie aus Los.",
+    "position":0
+    },
+
+
+    {
+    "type":"PayRenovationChanceCard",
+    "text":"Unversehens ergießt sich eine große Menge heißen Plasmas über Ihren Besitz. Reparieren Sie: 800eV pro Haus und 2300eV pro Hotel.",
+    "payamount":[800 2300]
+    },
+   
+    {
+    "type":"PayChanceCard",
+    "text":"Sie haben eine große Entdeckung gemacht, in der die Worte 'Dark Matter' und 'Dark Energy' vorkommen. Sie erhalten Forschungsgelder in Höhe von 3000eV.",
+    "payamount":-3000
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Der US-Geheimdienst bezahlt Sie für eine interessante Entdeckung. Sie geloben Stillschweigen und erhalten 1000eV. (Beschweren Sie sich nicht - Sie spielen ein kapitalistisches Spiel.)",
+    "payamount":-1000
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Ihr neues GLT (Ginormously Large Telescope) war sehr teuer. Sie bezahlen 3000eV.",
+    "payamount":3000
+    },
+    
+    {
+    "type":"MoveAmountChanceCard",
+    "text":"Relativitätstheorie ist schwierig. Sie verrechnen sich gründlich und laufen versehentlich drei Felder zurück. Dabei stolpern Sie über Ihre eigenen Füße.",
+    "amount":-3
+    },
+    
+    {
+    "type":"GoToJailChanceCard",
+    "text":"Sie haben durch 0 geteilt. Sie sollten sich schämen und gehen augenblicklich ins Gefängnis.",
+    },
+    
+    {
+    "type":"MoveToChanceCard",
+    "text":"Gehen Sie ans Ende des Universums (und noch viel weiter...!)",
+    "position":39
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Sie wollen sich schneller bewegen als Licht. Nun, das ist einfach nur albern. Zahlen Sie 400eV - Strafe für (versuchtes) zu schnelles Fahren.",
+    "payamount":400
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Ihr Genie ist verkannt. Aus Frust betrinken Sie sich und lassen zwei Bierflaschen im Labor stehen. Zahlen Sie 400eV Strafe.",
+    "payamount":400
+    },
+    
+    {
+    "type":"MoveToChanceCard",
+    "text":"Heureka! Sie haben Ihr Problem gelöst, sind aber unfassbar verwirrt und haben Ihre Brille verloren. Sie verlaufen sich und landen auf POSITION 24, bekommen aber 4000 eV, falls Sie über Los kommen.",
+    "position":24
+    },
+    
+    {
+    "type":"MoveToChanceCard",
+    "text":"Ihr Erzfeind hat Ihre Theorie zunichte gemacht. Wutschnaubend machen Sie sich auf den Weg zur internationalen Konferenz nach Timbuktu, aber am Flughafen FELD 15 wird gestreikt, also bleiben Sie dort.",
+    "position":15
+
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Aufgrund von quantenmechanischen Unsicherheiten ändert sich Ihr Kontostand zu Ihren Gunsten - Sie erhalten 1000 eV.",
+    "payamount":-1000
+    },
+]

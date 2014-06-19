@@ -34,7 +34,7 @@ public class GameActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		try {
-			String json = readStream(getAssets().open("test_field.json"));
+			String json = readStream(getAssets().open("field/test_field.json"));
 			game = GameFieldLoader.createGame(json);
 			buildField();
 		} catch (IOException e) {
