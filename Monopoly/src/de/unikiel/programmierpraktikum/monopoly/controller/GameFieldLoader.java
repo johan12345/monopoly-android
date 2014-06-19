@@ -70,9 +70,13 @@ public class GameFieldLoader {
 					pay.setAmount(spaceJson.getDouble("amount"));
 					space = pay;
 				} else if (type.equals("station")) {
-					space = new StationSpace();
+					StationSpace station = new StationSpace();
+					station.setName(spaceJson.getString("name"));
+					space = station;
 				} else if (type.equals("utility")) {
-					space = new UtilitySpace();
+					UtilitySpace utility = new UtilitySpace();
+					utility.setName(spaceJson.getString("name"));
+					space = utility;
 				} else if (type.equals("jail")) {
 					space = new JailSpace();
 				} else if (type.equals("go_to_jail")) {

@@ -1,0 +1,196 @@
+[
+	{
+		"type": "go"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 100,
+		"category": "brown"
+	},
+	{
+		"type": "community"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 100,
+		"category": "brown"
+	},
+	{
+		"type": "pay",
+		"amount": 4000
+	},
+	{
+		"type": "station",
+		"name": "Bahnhof"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 150,
+		"category": "light_blue"
+	},
+	{
+		"type": "chance"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 150,
+		"category": "light_blue"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 200,
+		"category": "light_blue"
+	},
+	{
+		"type": "jail"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 230,
+		"category": "pink"
+	},
+	{
+		"type": "utility",
+		"name": ""
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 230,
+		"category": "pink"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 280,
+		"category": "pink"
+	},
+	{
+		"type": "station",
+		"name": "Flughafen"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 300,
+		"category": "orange"
+	},
+	{
+		"type": "community"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 300,
+		"category": "orange"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 350,
+		"category": "orange"
+	},
+	{
+		"type": "free_parking"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 380,
+		"category": "red"
+	},
+	{
+		"type": "chance"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 380,
+		"category": "red"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 400,
+		"category": "red"
+	},
+	{
+		"type": "station",
+		"name": "Raumstation"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 430,
+		"category": "yellow"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 430,
+		"category": "yellow"
+	},
+	{
+		"type": "utility",
+		"name": ""
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 480,
+		"category": "yellow"
+	},
+	{
+		"type": "go_to_jail"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 500,
+		"category": "green"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 500,
+		"category": "green"
+	},
+	{
+		"type": "community"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 550,
+		"category": "green"
+	},
+	{
+		"type": "station",
+		"name": "Teleporterraum"
+	},
+	{
+		"type": "chance"
+	},
+	{
+		"type": "street",
+		"name": "Straße",
+		"base_rent": 580,
+		"category": "dark_blue"
+	},
+	{
+		"type": "pay",
+		"amount": 2000
+	},
+	{
+		"type": "street",
+		"name": "Ende des Universums",
+		"base_rent": 680,
+		"category": "dark_blue"
+	}
+]
