@@ -1,0 +1,17 @@
+[
+	{
+		"type": "go"
+	},
+	{
+		"type": "street",
+		"name": "Straße 1",
+		"base_rent": 100,
+		"category": "brown"
+	},
+	{
+		"type": "street",
+		"name": "Straße 2",
+		"base_rent": 200,
+		"category": "red"
+	}
+]
