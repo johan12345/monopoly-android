@@ -9,7 +9,7 @@
     {
     "type":"PayRenovationChanceCard",
     "text":"Sie haben versehentlich schwarze Löcher generiert und all Ihre Immobilien zerstört. Renovieren Sie sie: 500eV pro Haus und 2000eV pro Hotel.",
-    "payamount":[500 2000]
+    "payamount":[500, 2000]
     },
 
 
@@ -23,7 +23,7 @@
     {
     "type":"PayRenovationChanceCard",
     "text":"Unversehens ergießt sich eine große Menge heißen Plasmas über Ihren Besitz. Reparieren Sie: 800eV pro Haus und 2300eV pro Hotel.",
-    "payamount":[800 2300]
+    "payamount":[800, 2300]
     },
    
     {
@@ -52,7 +52,7 @@
     
     {
     "type":"GoToJailChanceCard",
-    "text":"Sie haben durch 0 geteilt. Sie sollten sich schämen und gehen augenblicklich ins Gefängnis.",
+    "text":"Sie haben durch 0 geteilt. Sie sollten sich schämen und gehen augenblicklich ins Gefängnis."
     },
     
     {
@@ -90,5 +90,5 @@
     "type":"PayChanceCard",
     "text":"Aufgrund von quantenmechanischen Unsicherheiten ändert sich Ihr Kontostand zu Ihren Gunsten - Sie erhalten 1000 eV.",
     "payamount":-1000
-    },
+    }
 ]
