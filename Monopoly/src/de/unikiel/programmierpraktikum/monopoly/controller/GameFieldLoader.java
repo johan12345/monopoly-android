@@ -7,19 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.unikiel.programmierpraktikum.monopoly.model.ChanceChanceSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.CommunityChanceSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.FreeParkingSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.Game;
-import de.unikiel.programmierpraktikum.monopoly.model.GoSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.GoToJailSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.JailSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.PaySpace;
-import de.unikiel.programmierpraktikum.monopoly.model.Space;
-import de.unikiel.programmierpraktikum.monopoly.model.StationSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace;
+import de.unikiel.programmierpraktikum.monopoly.model.*;
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
-import de.unikiel.programmierpraktikum.monopoly.model.UtilitySpace;
 
 /**
  * @author Miriam Scharnke, Johan v. Forstner
@@ -27,9 +16,63 @@ import de.unikiel.programmierpraktikum.monopoly.model.UtilitySpace;
  */
 public class GameFieldLoader {
 	
-	public static Game createGame(String field) {
+	/**
+	 * 
+	 * @param field JSON String for the field
+	 * @param chanceCards JSON String for the chance cards
+	 * @param communityCards JSON String for the community cards
+	 * @param players List of players
+	 * @return a new Game with all the attributes loaded
+	 */
+	public static Game createGame(String field, String chanceCards, String communityCards, List<Player> players) {
 		Game game = new Game();
-		
+		game.setPlayers(players);
+		game.setChanceCards(loadChanceCards(chanceCards));
+		game.setCommunityCards(loadChanceCards(communityCards));		
+		game.setSpaces(loadSpaces(field));
+		return game;
+	}
+	
+	private static List<ChanceCard> loadChanceCards(String chanceCards) {
+		try {
+			JSONArray cards = new JSONArray(chanceCards);
+			List<ChanceCard> cardsList = new ArrayList<ChanceCard>();
+			for(int i = 0; i < cards.length(); i++) {
+				JSONObject cardJson = cards.getJSONObject(i);
+				ChanceCard card = null;
+				String type = cardJson.getString("type");
+				if(type.equals("GoToJailChanceCard")) {
+					GoToJailChanceCard goToJail = new GoToJailChanceCard();
+					card = goToJail;
+				} else if(type.equals("MoveAmountChanceCard")) {
+					MoveAmountChanceCard moveAmount = new MoveAmountChanceCard();
+					moveAmount.setAmount(cardJson.getInt("amount"));
+					card = moveAmount;
+				} else if(type.equals("MoveToChanceCard")) {
+					MoveToChanceCard moveTo = new MoveToChanceCard();
+					moveTo.setSpacePos(cardJson.getInt("position"));
+					card = moveTo;
+				} else if(type.equals("PayChanceCard")) {
+					PayChanceCard pay = new PayChanceCard();
+					pay.setAmount(cardJson.getDouble("payamount"));
+					card = pay;
+				} else if(type.equals("PayRenovationChanceCard")) {
+					PayRenovationChanceCard pay = new PayRenovationChanceCard();
+					pay.setHouseAmount(cardJson.getJSONArray("payamount").getDouble(0));
+					pay.setHotelAmount(cardJson.getJSONArray("payamount").getDouble(1));
+					card = pay;
+				}
+				card.setText(cardJson.getString("text"));
+				cardsList.add(card);
+			}
+			return cardsList;
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private static List<Space> loadSpaces(String field) {
 		try {
 			JSONArray spaces = new JSONArray(field);
 			List<Space> spacesList = new ArrayList<Space>();
@@ -90,9 +133,8 @@ public class GameFieldLoader {
 				}
 				spacesList.add(space);
 			}
-			game.setSpaces(spacesList);
 			
-			return game;
+			return spacesList;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

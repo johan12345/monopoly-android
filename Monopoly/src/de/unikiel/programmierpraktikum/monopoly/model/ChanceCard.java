@@ -9,7 +9,6 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  */
 public abstract class ChanceCard {
 	private String text;
-	private String title;
 	/**
 	 * @return the text
 	 */
@@ -21,17 +20,5 @@ public abstract class ChanceCard {
 	 */
 	public void setText(String text) {
 		this.text = text;
-	}
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
 	}
 }

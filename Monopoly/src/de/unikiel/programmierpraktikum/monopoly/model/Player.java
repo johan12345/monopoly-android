@@ -1,5 +1,6 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
@@ -10,7 +11,7 @@ import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
  */
 public class Player {
 	public enum Peg {
-		
+		MARIE_CURIE, EMMY_NOETHER, ALBERT_EINSTEIN, MAX_PLANCK, RICHARD_FEYNMAN, STEPHEN_HAWKING, ERWIN_SCHROEDINGER, MICHAEL_FARADAY, WOLFGANG_PAULI, WERNER_HEISENBERG
 	}
 	private int currentPos;
 	private double money;
@@ -18,6 +19,16 @@ public class Player {
 	private String name;
 	private boolean inJail;
 	private List<Space> property;
+	
+	public Player(String name, Peg peg) {
+		this.name = name;
+		this.peg = peg;
+		money = 0;
+		inJail = false;
+		currentPos = 0;
+		property = new ArrayList<Space>();
+	}
+	
 	/**
 	 * @return the currentPos
 	 */

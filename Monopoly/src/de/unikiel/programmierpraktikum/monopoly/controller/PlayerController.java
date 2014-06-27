@@ -22,10 +22,15 @@ public class PlayerController {
 	private Player player;
 	private Game game;
 	
+	public PlayerController(Player player, Game game) {
+		this.player = player;
+		this.game = game;
+	}
+	
 	public int throwTheDice() {
-		int dice1 = Utilities.randomInt(1, 6);
-		int dice2 = Utilities.randomInt(1, 6);
-		return dice1 + dice2;
+		int count = Utilities.dice();
+		moveAmount(count);
+		return count;
 	}
 	
 	public Space moveAmount(int amount) {
