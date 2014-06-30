@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:text="Gefängnis"
-            android:textSize="42dp" />
+            android:textSize="42sp" />
 
     </LinearLayout>
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:text="nur zu Besuch"
-            android:textSize="42dp" />
+            android:textSize="42sp" />
 
     </LinearLayout>
 

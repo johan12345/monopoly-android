@@ -6,7 +6,18 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  */
 public class StreetSpace extends BuyableSpace {
 	public enum Category {
-		BROWN, LIGHT_BLUE, PINK, ORANGE, RED, YELLOW, GREEN, DARK_BLUE
+		BROWN, LIGHT_BLUE, PINK, ORANGE, RED, YELLOW, GREEN, DARK_BLUE;
+		public static Category fromString(String name) {
+			if(name.equals("brown")) return BROWN;
+			else if (name.equals("light_blue")) return LIGHT_BLUE;
+			else if (name.equals("pink")) return PINK;
+			else if (name.equals("orange")) return ORANGE;
+			else if (name.equals("red")) return RED;
+			else if (name.equals("yellow")) return YELLOW;
+			else if (name.equals("green")) return GREEN;
+			else if (name.equals("dark_blue")) return DARK_BLUE;
+			else return null;
+		}
 	}
 	private Category category;
 	private double baseRent;

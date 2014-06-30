@@ -1,196 +1,210 @@
 [
-	{
-		"type": "go"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 100,
-		"category": "brown"
-	},
-	{
-		"type": "community"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 100,
-		"category": "brown"
-	},
-	{
-		"type": "pay",
-		"amount": 4000
-	},
-	{
-		"type": "station",
-		"name": "Bahnhof"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 150,
-		"category": "light_blue"
-	},
-	{
-		"type": "chance"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 150,
-		"category": "light_blue"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 200,
-		"category": "light_blue"
-	},
-	{
-		"type": "jail"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 230,
-		"category": "pink"
-	},
-	{
-		"type": "utility",
-		"name": ""
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 230,
-		"category": "pink"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 280,
-		"category": "pink"
-	},
-	{
-		"type": "station",
-		"name": "Flughafen"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 300,
-		"category": "orange"
-	},
-	{
-		"type": "community"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 300,
-		"category": "orange"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 350,
-		"category": "orange"
-	},
-	{
-		"type": "free_parking"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 380,
-		"category": "red"
-	},
-	{
-		"type": "chance"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 380,
-		"category": "red"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 400,
-		"category": "red"
-	},
-	{
-		"type": "station",
-		"name": "Raumstation"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 430,
-		"category": "yellow"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 430,
-		"category": "yellow"
-	},
-	{
-		"type": "utility",
-		"name": ""
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 480,
-		"category": "yellow"
-	},
-	{
-		"type": "go_to_jail"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 500,
-		"category": "green"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 500,
-		"category": "green"
-	},
-	{
-		"type": "community"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 550,
-		"category": "green"
-	},
-	{
-		"type": "station",
-		"name": "Teleporterraum"
-	},
-	{
-		"type": "chance"
-	},
-	{
-		"type": "street",
-		"name": "Straße",
-		"base_rent": 580,
-		"category": "dark_blue"
-	},
-	{
-		"type": "pay",
-		"amount": 2000
-	},
-	{
-		"type": "street",
-		"name": "Ende des Universums",
-		"base_rent": 680,
-		"category": "dark_blue"
-	}
+    {
+        "type": "go"
+    },
+    {
+        "type": "street",
+        "name": "Charm Quark",
+        "base_rent": 40,
+        "category": "brown"
+    },
+    {
+        "type": "community"
+    },
+    {
+        "type": "street",
+        "name": "Strange Quark",
+        "base_rent": 80,
+        "category": "brown"
+    },
+    {
+        "type": "pay",
+        "name": "Kirchensteuer",
+        "amount": 2000
+    },
+    {
+        "type": "station",
+        "name": "Kleiner Bahnhof",
+        "base_rent": 500
+    },
+    {
+        "type": "street",
+        "name": "Elektron",
+        "base_rent": 120,
+        "category": "light_blue"
+    },
+    {
+        "type": "chance"
+    },
+    {
+        "type": "street",
+        "name": "Myon",
+        "base_rent": 120,
+        "category": "light_blue"
+    },
+    {
+        "type": "street",
+        "name": "Tau",
+        "base_rent": 160,
+        "category": "light_blue"
+    },
+    {
+        "type": "jail"
+    },
+    {
+        "type": "street",
+        "name": "Pion",
+        "base_rent": 200,
+        "category": "pink"
+    },
+    {
+        "type": "utility",
+        "name": "Large Hadron Collider",
+        "base_rent": [
+            80,
+            200
+        ]
+    },
+    {
+        "type": "street",
+        "name": "Kaon",
+        "base_rent": 200,
+        "category": "pink"
+    },
+    {
+        "type": "street",
+        "name": "Psi-Meson",
+        "base_rent": 240,
+        "category": "pink"
+    },
+    {
+        "type": "station",
+        "name": "Flughafen",
+        "base_rent": 500
+    },
+    {
+        "type": "street",
+        "name": "Neutron",
+        "base_rent": 280,
+        "category": "orange"
+    },
+    {
+        "type": "community"
+    },
+    {
+        "type": "street",
+        "name": "Proton",
+        "base_rent": 280,
+        "category": "orange"
+    },
+    {
+        "type": "street",
+        "name": "Sigma Plus",
+        "base_rent": 320,
+        "category": "orange"
+    },
+    {
+        "type": "free_parking"
+    },
+    {
+        "type": "street",
+        "name": "Photon",
+        "base_rent": 360,
+        "category": "red"
+    },
+    {
+        "type": "chance"
+    },
+    {
+        "type": "street",
+        "name": "W-Boson",
+        "base_rent": 360,
+        "category": "red"
+    },
+    {
+        "type": "street",
+        "name": "Gluon",
+        "base_rent": 400,
+        "category": "red"
+    },
+    {
+        "type": "station",
+        "name": "Raumstation",
+        "base_rent": 500
+    },
+    {
+        "type": "street",
+        "name": "Neutrino",
+        "base_rent": 440,
+        "category": "yellow"
+    },
+    {
+        "type": "street",
+        "name": "Higgs-Boson",
+        "base_rent": 440,
+        "category": "yellow"
+    },
+    {
+        "type": "utility",
+        "name": "European Extremely Large Telescope",
+        "base_rent": [
+            80,
+            200
+        ]
+    },
+    {
+        "type": "street",
+        "name": "Graviton",
+        "base_rent": 480,
+        "category": "yellow"
+    },
+    {
+        "type": "go_to_jail"
+    },
+    {
+        "type": "street",
+        "name": "Sonne",
+        "base_rent": 520,
+        "category": "green"
+    },
+    {
+        "type": "street",
+        "name": "Andromeda-Nebel",
+        "base_rent": 520,
+        "category": "green"
+    },
+    {
+        "type": "community"
+    },
+    {
+        "type": "street",
+        "name": "Hercules-Cluster",
+        "base_rent": 560,
+        "category": "green"
+    },
+    {
+        "type": "station",
+        "name": "Teleporter",
+        "base_rent": 500
+    },
+    {
+        "type": "chance"
+    },
+    {
+        "type": "street",
+        "name": "Beobachtbares Universum",
+        "base_rent": 700,
+        "category": "dark_blue"
+    },
+    {
+        "type": "pay",
+        "name": "Verlust von Energie durch Reibung",
+        "amount": 2000
+    },
+    {
+        "type": "street",
+        "name": "Ende des Universums",
+        "base_rent": 1000,
+        "category": "dark_blue"
+    }
 ]

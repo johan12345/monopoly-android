@@ -85,27 +85,9 @@ public class GameFieldLoader {
 				} else if (type.equals("street")) {
 					StreetSpace street = new StreetSpace();
 					street.setBaseRent(spaceJson.getDouble("base_rent"));
-					street.setName(spaceJson.getString("name"));
-					
+					street.setName(spaceJson.getString("name"));					
 					String category = spaceJson.getString("category");
-					if(category.equals("brown")) {
-						street.setCategory(Category.BROWN);
-					} else if (category.equals("light_blue")) {
-						street.setCategory(Category.LIGHT_BLUE);
-					} else if (category.equals("pink")) {
-						street.setCategory(Category.PINK);
-					} else if (category.equals("orange")) {
-						street.setCategory(Category.ORANGE);
-					} else if (category.equals("red")) {
-						street.setCategory(Category.RED);
-					} else if (category.equals("yellow")) {
-						street.setCategory(Category.YELLOW);
-					} else if (category.equals("green")) {
-						street.setCategory(Category.GREEN);
-					} else if (category.equals("dark_blue")) {
-						street.setCategory(Category.DARK_BLUE);
-					} 
-					
+					street.setCategory(Category.fromString(category));					
 					space = street;
 				} else if (type.equals("pay")) {
 					PaySpace pay = new PaySpace();

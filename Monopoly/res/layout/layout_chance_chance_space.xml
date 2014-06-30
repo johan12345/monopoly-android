@@ -11,8 +11,16 @@
         android:layout_height="wrap_content"
         android:text="Ereignisfeld"
         android:layout_gravity="center_horizontal"
-        android:textSize="24dp"
-        android:fontFamily="sans-serif-light" />   
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-light" />
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="192dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="\?" />
 
 </LinearLayout>

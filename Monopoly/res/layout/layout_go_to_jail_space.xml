@@ -12,6 +12,6 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="sans-serif-light"
         android:text="Gehen Sie in das Gefängnis"
-        android:textSize="45dp" />
+        android:textSize="45sp" />
 
 </LinearLayout>

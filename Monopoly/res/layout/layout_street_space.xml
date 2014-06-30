@@ -1,39 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="225dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="8dp" >
 
-    <TextView
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:layout_gravity="center_horizontal"
-        android:textSize="48dp"
-        android:fontFamily="sans-serif-light" />
-    
-    <TextView
-        android:id="@+id/txtPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100 eV"
-        android:layout_gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+<View
+    android:id="@+id/category"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:background="#FF0000" />
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
-    
-    <View
-        android:id="@+id/category"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:background="#FF0000"
-        android:layout_gravity="bottom"
-        />
+<ImageView
+    android:id="@+id/imageView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/category"
+    android:layout_alignLeft="@+id/category"
+    android:src="@drawable/ic_launcher" />
 
-</LinearLayout>
+<TextView
+    android:id="@+id/txtPrice"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/txtName"
+    android:layout_centerHorizontal="true"
+    android:text="100 eV"
+    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+<TextView
+    android:id="@+id/txtName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:lines="2"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:ellipsize="end"
+    android:fontFamily="sans-serif-light"
+    android:text="Large Hadron Collider"
+    android:gravity="center_horizontal"
+    android:textSize="28sp" />
+
+</RelativeLayout>

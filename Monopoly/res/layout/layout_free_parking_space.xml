@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Feldfreier Raum"
         android:layout_gravity="center_horizontal"
-        android:textSize="48dp"
+        android:textSize="48sp"
         android:fontFamily="sans-serif-light" />   
 
 

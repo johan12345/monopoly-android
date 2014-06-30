@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Los"
         android:layout_gravity="center_horizontal"
-        android:textSize="96dp"
+        android:textSize="96sp"
         android:fontFamily="sans-serif-light" />   
 
 

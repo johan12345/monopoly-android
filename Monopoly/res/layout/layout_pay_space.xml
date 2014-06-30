@@ -9,9 +9,9 @@
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
+        android:text="Kirchensteuer"
         android:layout_gravity="center_horizontal"
-        android:textSize="36dp"
+        android:textSize="32sp"
         android:fontFamily="sans-serif-light" />   
         
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="1000 eV"
         android:layout_gravity="center_horizontal"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:fontFamily="sans-serif-light" /> 
 
 
