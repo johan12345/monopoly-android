@@ -4,43 +4,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView1"
+    <FrameLayout
+        android:id="@+id/progressBars"
         android:layout_width="match_parent"
-        android:layout_height="0dp" 
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/scrollDisplay"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false" />
+    </FrameLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >           
-	        <LinearLayout
-	            android:id="@+id/spaces"
-	            android:layout_width="wrap_content"
-	            android:layout_height="match_parent"
-	            android:orientation="horizontal" >            
-	        </LinearLayout>
-	        	        
-	        <FrameLayout
-	            android:id="@+id/players"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent" >
-	        </FrameLayout>
-        </FrameLayout>
+            android:layout_height="match_parent" >
 
+            <LinearLayout
+                android:id="@+id/spaces"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/players"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </FrameLayout>
+        </FrameLayout>
     </HorizontalScrollView>
-    
-    
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp" >
 
         <Button
             android:id="@+id/btnThrowDice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Würfeln" />
-
     </LinearLayout>
-    
 
 </LinearLayout>

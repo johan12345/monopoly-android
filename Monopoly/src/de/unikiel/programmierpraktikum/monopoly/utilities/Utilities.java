@@ -4,7 +4,10 @@ import de.unikiel.programmierpraktikum.monopoly.R;
 import de.unikiel.programmierpraktikum.monopoly.model.Player.Peg;
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.DisplayMetrics;
+import android.view.View;
 
 /**
  * @author johan_000
@@ -29,6 +32,15 @@ public class Utilities {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 		return dp;
+	}
+	
+	public static Bitmap loadBitmapFromView(View v) {
+		Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+				Bitmap.Config.ARGB_8888);
+		Canvas c = new Canvas(b);
+		v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+		v.draw(c);
+		return b;
 	}
 
 	public static int getCircleDrawable(int index) {
