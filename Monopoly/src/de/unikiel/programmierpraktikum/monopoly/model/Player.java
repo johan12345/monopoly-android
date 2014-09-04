@@ -160,7 +160,7 @@ public class Player implements Serializable {
 		Category category = space.getCategory();
 		int maxHouseCount = 0;
 		for(Space currentSpace:game.getSpaces()) {
-			if(space instanceof StreetSpace) {
+			if(currentSpace instanceof StreetSpace) {
 				StreetSpace streetSpace = (StreetSpace) currentSpace;
 				if(streetSpace.getCategory() == category && !streetSpace.equals(space)) {
 					if(streetSpace.getHousesCount() > maxHouseCount)
@@ -171,7 +171,7 @@ public class Player implements Serializable {
 				}
 			}
 		}
-		return space.getHousesCount() == maxHouseCount;
+		return space.getHousesCount() >= maxHouseCount;
 	}
 
 	public int getIndex() {

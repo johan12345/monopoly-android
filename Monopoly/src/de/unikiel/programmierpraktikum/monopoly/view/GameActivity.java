@@ -87,50 +87,6 @@ public class GameActivity extends Activity {
 
 		viewCreator = new ViewCreator(this);
 
-		// Load old game if it exists
-		SaveGame savegame = null;
-		try {
-			savegame = new SaveGameHandler().loadGame(this, "test.game");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (savegame != null) {
-			controller = savegame.getController();
-			game = controller.getGame();
-			setStatus(savegame.getStatus());
-			buildField();
-			buildPlayers();
-			refresh();
-		} else {
-			try {
-				String field = readStream(getAssets().open("field/field.json"));
-				String chanceCards = readStream(getAssets().open(
-						"chance_cards/chance_cards.json"));
-				String communityCards = readStream(getAssets().open(
-						"chance_cards/community_cards.json")); // TODO:
-				List<Player> players = new ArrayList<Player>();
-				Player einstein = new Player("Einstein", Peg.ALBERT_EINSTEIN);
-				players.add(einstein);
-				players.add(new Player("Heisenberg", Peg.WERNER_HEISENBERG));
-
-				game = GameFieldLoader.createGame(field, chanceCards,
-						communityCards, players);
-				controller = new GameController(game);
-				controller.giveStartMoney();
-				((StreetSpace) game.getSpaces().get(37)).setOwner(einstein);
-				((StreetSpace) game.getSpaces().get(39)).setOwner(einstein);
-				buildField();
-				buildPlayers();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			refreshTextFields();
-			setStatus(Status.DICE_NOT_THROWN);
-		}
-
 		btnThrowDice.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -527,7 +483,7 @@ public class GameActivity extends Activity {
 			animateFieldScroll(scrollPos, 800, null);
 		} else {
 			final int maxScroll = spaces.getWidth();
-			
+
 			// Create fake views to make it look like the field scrolls
 			// over the right end back to the start
 			final List<View> fakeViews = new ArrayList<View>();
@@ -549,15 +505,16 @@ public class GameActivity extends Activity {
 				public void onGlobalLayout() {
 					spaces.getViewTreeObserver().removeGlobalOnLayoutListener(
 							this);
-					animateFieldScroll(maxScroll + scrollPos, 800, new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							fieldScroller.scrollTo(scrollPos, 0);
-							for (View view : fakeViews) {
-								spaces.removeView(view);
-							}
-						}
-					});
+					animateFieldScroll(maxScroll + scrollPos, 800,
+							new AnimatorListenerAdapter() {
+								@Override
+								public void onAnimationEnd(Animator animation) {
+									fieldScroller.scrollTo(scrollPos, 0);
+									for (View view : fakeViews) {
+										spaces.removeView(view);
+									}
+								}
+							});
 				}
 			});
 		}
@@ -701,7 +658,49 @@ public class GameActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		// Load old game if it exists
+		SaveGame savegame = null;
+		try {
+			savegame = new SaveGameHandler().loadGame(this, "test.game");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (savegame != null) {
+			controller = savegame.getController();
+			game = controller.getGame();
+			setStatus(savegame.getStatus());
+			buildField();
+			buildPlayers();
+			refresh();
+		} else {
+			try {
+				String field = readStream(getAssets().open("field/field.json"));
+				String chanceCards = readStream(getAssets().open(
+						"chance_cards/chance_cards.json"));
+				String communityCards = readStream(getAssets().open(
+						"chance_cards/community_cards.json")); // TODO:
+				List<Player> players = new ArrayList<Player>();
+				Player einstein = new Player("Einstein", Peg.ALBERT_EINSTEIN);
+				players.add(einstein);
+				players.add(new Player("Heisenberg", Peg.WERNER_HEISENBERG));
 
+				game = GameFieldLoader.createGame(field, chanceCards,
+						communityCards, players);
+				controller = new GameController(game);
+				controller.giveStartMoney();
+				((StreetSpace) game.getSpaces().get(37)).setOwner(einstein);
+				((StreetSpace) game.getSpaces().get(39)).setOwner(einstein);
+				buildField();
+				buildPlayers();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			refreshTextFields();
+			setStatus(Status.DICE_NOT_THROWN);
+		}
 	}
 
 	@Override
