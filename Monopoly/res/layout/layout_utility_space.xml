@@ -19,12 +19,18 @@
         android:textSize="28sp" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/owner_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignParentLeft="true" />
+    
+    <ImageView
+        android:id="@+id/owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/txtPrice"

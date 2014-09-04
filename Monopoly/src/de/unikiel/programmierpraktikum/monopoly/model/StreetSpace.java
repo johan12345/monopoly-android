@@ -5,6 +5,8 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  * Speichert die Eigenschaften eines Straﬂen-Feldes auf dem Spielfeld
  */
 public class StreetSpace extends BuyableSpace {
+	private static final long serialVersionUID = 3101782499194398218L;
+
 	public enum Category {
 		BROWN, LIGHT_BLUE, PINK, ORANGE, RED, YELLOW, GREEN, DARK_BLUE;
 		public static Category fromString(String name) {
@@ -37,8 +39,8 @@ public class StreetSpace extends BuyableSpace {
 	/**
 	 * @return the rent
 	 */
-	public double getRent(Player player) {
-		if(isMortgage() || player.equals(getOwner())) {
+	public double getRent() {
+		if(isMortgage()) {
 			return 0;
 		} else {
 			switch (housesCount) {
@@ -74,6 +76,16 @@ public class StreetSpace extends BuyableSpace {
 	 */
 	public int getHousesCount() {
 		return housesCount;
+	}
+	
+	public int getRealHousesCount() {
+		if (housesCount < 5)
+			return housesCount;
+		else
+			return 0;
+	}
+	public int getHotelCount() {
+		return housesCount == 5 ? 1 : 0;
 	}
 	/**
 	 * 

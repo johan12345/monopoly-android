@@ -1,10 +1,12 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 public abstract class BuyableSpace extends Space {
+	private static final long serialVersionUID = -7671400846336979628L;
 	private Player owner;
 	private boolean mortgage; //Hypothek
 	
-	public abstract double getRent(Player player);
+	public abstract double getRent();
+	
 	public abstract double getPurchasePrice();
 	public double getMortgageValue() {
 		return getPurchasePrice() / 2;

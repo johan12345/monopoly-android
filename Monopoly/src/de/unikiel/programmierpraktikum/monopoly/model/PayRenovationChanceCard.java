@@ -8,6 +8,7 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  *
  */
 public class PayRenovationChanceCard extends ChanceCard {
+	private static final long serialVersionUID = 2018485354000414262L;
 	private double houseAmount;
 	private double hotelAmount;
 	

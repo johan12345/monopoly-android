@@ -9,4 +9,6 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  */
 public class GoToJailChanceCard extends ChanceCard {
 
+	private static final long serialVersionUID = 2722623743159261818L;
+
 }

@@ -9,4 +9,6 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  */
 public class GoToJailSpace extends Space {
 
+	private static final long serialVersionUID = 6160650984775541654L;
+
 }

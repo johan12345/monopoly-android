@@ -14,12 +14,18 @@
     android:background="#FF0000" />
 
 <ImageView
-    android:id="@+id/imageView1"
+    android:id="@+id/owner_bg"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignBottom="@+id/category"
-    android:layout_alignLeft="@+id/category"
-    android:src="@drawable/ic_launcher" />
+    android:layout_alignLeft="@+id/category" />
+
+<ImageView
+    android:id="@+id/owner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/category"
+    android:layout_alignLeft="@+id/category" />
 
 <TextView
     android:id="@+id/txtPrice"

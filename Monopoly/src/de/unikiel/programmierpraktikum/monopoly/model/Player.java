@@ -1,15 +1,19 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
 
 /**
  * @author Miriam Scharnke, Johan v. Forstner
  * Speichert die Eigenschaften eines Spielers, z.B. Position
  */
-public class Player {
+public class Player implements Serializable {
+	private static final long serialVersionUID = 8343266192449232070L;
+
 	public enum Peg {
 		MARIE_CURIE, EMMY_NOETHER, ALBERT_EINSTEIN, MAX_PLANCK, RICHARD_FEYNMAN, STEPHEN_HAWKING, ERWIN_SCHROEDINGER, MICHAEL_FARADAY, WOLFGANG_PAULI, WERNER_HEISENBERG
 	}
@@ -17,16 +21,20 @@ public class Player {
 	private double money;
 	private Peg peg;
 	private String name;
-	private boolean inJail;
+	private int inJail;
 	private List<Space> property;
+	private int index;
+	private boolean hasLost;
+	private double debt;
 	
 	public Player(String name, Peg peg) {
 		this.name = name;
 		this.peg = peg;
 		money = 0;
-		inJail = false;
+		inJail = 0;
 		currentPos = 0;
 		property = new ArrayList<Space>();
+		hasLost = false;
 	}
 	
 	/**
@@ -47,11 +55,11 @@ public class Player {
 	public double getMoney() {
 		return money;
 	}
-	public void pay(double amount) {
+	public void pay(double amount) throws LackOfMoneyException {
 		if(money >= amount) {
 			money -= amount;
 		} else {
-			//TODO: Ausnahme
+			throw new LackOfMoneyException(amount);
 		}
 	}
 	public void earn(double amount) {
@@ -85,12 +93,18 @@ public class Player {
 	 * @return the inJail
 	 */
 	public boolean isInJail() {
+		return inJail > 0;
+	}
+	public int getJailCounter() {
 		return inJail;
+	}
+	public void increaseJailCounter() {
+		inJail ++;
 	}
 	/**
 	 * @param inJail the inJail to set
 	 */
-	public void setInJail(boolean inJail) {
+	public void setInJail(int inJail) {
 		this.inJail = inJail;
 	}
 	
@@ -128,9 +142,9 @@ public class Player {
 		Category category = space.getCategory();
 		int maxHouseCount = 0;
 		for(Space currentSpace:game.getSpaces()) {
-			if(space instanceof StreetSpace) {
-				StreetSpace streetSpace = (StreetSpace) currentSpace;
-				if(streetSpace.getCategory() == category) {
+			if(currentSpace instanceof StreetSpace) {
+				StreetSpace streetSpace = (StreetSpace) currentSpace;				
+				if(streetSpace.getCategory() == category && !streetSpace.equals(space)) {
 					if(streetSpace.getHousesCount() > maxHouseCount)
 						maxHouseCount = streetSpace.getHousesCount();
 					
@@ -148,7 +162,7 @@ public class Player {
 		for(Space currentSpace:game.getSpaces()) {
 			if(space instanceof StreetSpace) {
 				StreetSpace streetSpace = (StreetSpace) currentSpace;
-				if(streetSpace.getCategory() == category) {
+				if(streetSpace.getCategory() == category && !streetSpace.equals(space)) {
 					if(streetSpace.getHousesCount() > maxHouseCount)
 						maxHouseCount = streetSpace.getHousesCount();
 					
@@ -158,5 +172,29 @@ public class Player {
 			}
 		}
 		return space.getHousesCount() == maxHouseCount;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	
+	public boolean hasLost() {
+		return hasLost;
+	}
+	
+	public void setHasLost() {
+		hasLost = true;
+	}
+
+	public double getDebt() {
+		return debt;
+	}
+
+	public void setDebt(double debt) {
+		this.debt = debt;
 	}
 }

@@ -1,6 +1,7 @@
 package de.unikiel.programmierpraktikum.monopoly.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -27,9 +28,16 @@ public class GameFieldLoader {
 	public static Game createGame(String field, String chanceCards, String communityCards, List<Player> players) {
 		Game game = new Game();
 		game.setPlayers(players);
+		int i = 0;
+		for (Player player:game.getPlayers()) {
+			player.setIndex(i);
+			i++;
+		}
 		game.setChanceCards(loadChanceCards(chanceCards));
 		game.setCommunityCards(loadChanceCards(communityCards));		
 		game.setSpaces(loadSpaces(field));
+		Collections.shuffle(game.getChanceCards());
+		Collections.shuffle(game.getCommunityCards());
 		return game;
 	}
 	
@@ -61,6 +69,10 @@ public class GameFieldLoader {
 					pay.setHouseAmount(cardJson.getJSONArray("payamount").getDouble(0));
 					pay.setHotelAmount(cardJson.getJSONArray("payamount").getDouble(1));
 					card = pay;
+				} else if (type.equals("BirthdayChanceCard")) {
+					BirthdayChanceCard birthday = new BirthdayChanceCard();
+					birthday.setAmount(cardJson.getDouble("payamount"));
+					card = birthday;
 				}
 				card.setText(cardJson.getString("text"));
 				cardsList.add(card);

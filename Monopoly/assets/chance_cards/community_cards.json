@@ -1,0 +1,95 @@
+[
+
+    {
+    "type":"BirthdayChanceCard",
+    "text":"Ihre Habilitation jährt sich zum wiederholten Male. Man schenkt Ihnen Wein, den Sie nicht leiden können und heimlich wieder verkaufen. So erhalten Sie letztendlich von jedem Ihrer Kollegen 200eV.",
+    "payamount":200
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Ein Vogone hat Ihnen seine gesammelten Werke vorgetragen. Sie sind traumatisiert. Zahlen Sie 2000eV an Ihren Psychoanalytiker.",
+    "payamount":2000
+    },
+
+
+    {
+    "type":"PayChanceCard",
+    "text":"Schweren Herzens veräußern Sie Ihre Comicbuchsammlung, da Sie sonst Ihren Kaffee nicht mehr hätten bezahlen können. Sie erhalten aber nur 100eV, da die Hefte nicht mehr originalverpackt waren.",
+    "payamount":-100
+    },
+
+
+    {
+    "type":"PayChanceCard",
+    "text":"Bill Gates ex machina: Er taucht kurz auf, schenkt Ihnen 2000eV und geht wieder.",
+    "payamount":-2000
+    },
+   
+    {
+    "type":"PayChanceCard",
+    "text":"Jemand vom Chaoscomputerclub hackt sich in den Server Ihrer Bank und spielt ein bisschen herum, sodass Ihr Kontostand plötzlich um 400eV höher ist als zuvor. (Sie selbst haben damit selbstverständlich nichts zu tun.)" ,
+    "payamount":-400
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Sie haben den zweiten Preis in einer Schönheitskonkurrenz gewonnen. Ziehen Sie 200eV ein.",
+    "payamount":-200
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Aus Prinzip zahlen Sie 200eV Kirchensteuer an die Kirche des fliegenden Spaghettimonsters.",
+    "payamount":200
+    },
+    
+    {
+    "type":"MoveToChanceCard",
+    "text":"Fliegende Riesenadler nehmen Sie mit bis auf Los.",
+    "position":0
+    },
+    
+    {
+    "type":"GoToJailChanceCard",
+    "text":"Sie haben einem Polizeibeamten klarzumachen versucht, weshalb es zur mathematischen Konsistenz der Realität unabdinglich war, so schnell zu fahren, wie Sie gefahren sind. Gehen Sie nun ins Gefängnis: Wegen Trunkenheits am Steuer.",
+    "position":"Jail"
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Sie haben (betrunkenerweise) fünfzig Exemplare von ›Ayurvedisches Quantenyoga für Einsteiger‹ gekauft und diese am nächsten Morgen heimlich in Ihrem Garten verbrannt. Sie sind sich nicht sicher, was mehr schmerzt: Die Schande oder die Rechnung über 1000eV, die Sie nun zu begleichen haben." ,
+    "payamount":1000
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Programmierfehler: Der Rechner glaubt irrtümlicherweise, Sie seien über Los gekommen und gesteht Ihnen weitere 4000eV zu.",
+    "payamount":-4000
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Aus unerfindlichen Gründen erhalten Sie 2000eV.",
+    "payamount":-2000
+    },
+    
+    {
+    "type":"MoveToChanceCard",
+    "text":"Alles ist seltsam! Allerdings nicht auf die richtige Art, denn Sie landen beim Charm Quark.",
+    "position":1
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Sie wurden als Häretiker exkommuniziert! (Als letzter in Ihrer Arbeitsgruppe.) Das gehen Sie gemeinsam feiern! Zahlen Sie dafür, mit dem guten Gefühl, etwas Lohnenswertes geschafft zu haben, 100eV." ,
+    "payamount":100
+
+    },
+    
+    {
+    "type":"PayChanceCard",
+    "text":"Zahlen Sie 1000eV für eine unfassbar coole App, die jedes Mal den Darth-Vader-Soundtrack abspielt, wenn Sie bösartig lachen.",
+    "payamount":1000
+    }
+]

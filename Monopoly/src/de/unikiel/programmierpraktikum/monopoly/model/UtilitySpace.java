@@ -5,12 +5,12 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  * Speichert die Eigenschaften eines Versorgungswerkfeldes auf dem Spielfeld
  */
 public class UtilitySpace extends BuyableSpace {
-
+	private static final long serialVersionUID = -8160803779666052766L;
 	private static final double BASE_RENT = 375;
 
 	@Override
-	public double getRent(Player player) {
-		return BASE_RENT * Math.pow(2, player.getUtilityCount() - 1);
+	public double getRent() {
+		return isMortgage() ? 0 : BASE_RENT * Math.pow(2, getOwner().getUtilityCount() - 1);
 	}
 
 	@Override

@@ -7,21 +7,21 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  * @author johan_000
  *
  */
-public class MoveAmountChanceCard extends ChanceCard {
-	private static final long serialVersionUID = -6451999155066376394L;
-	private int amount;
+public class BirthdayChanceCard extends ChanceCard {
+	private static final long serialVersionUID = -11989111947849631L;
+	private double amount;
 
 	/**
 	 * @return the amount
 	 */
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
 	/**
 	 * @param amount the amount to set
 	 */
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 }

@@ -75,13 +75,13 @@
     
     {
     "type":"MoveToChanceCard",
-    "text":"Heureka! Sie haben Ihr Problem gelöst, sind aber unfassbar verwirrt und haben Ihre Brille verloren. Sie verlaufen sich und landen auf POSITION 24, bekommen aber 4000 eV, falls Sie über Los kommen.",
+    "text":"Heureka! Sie haben Ihr Problem gelöst, sind aber unfassbar verwirrt und haben Ihre Brille verloren. Sie verlaufen sich und landen beim Gluon, bekommen aber 4000 eV, falls Sie über Los kommen.",
     "position":24
     },
     
     {
     "type":"MoveToChanceCard",
-    "text":"Ihr Erzfeind hat Ihre Theorie zunichte gemacht. Wutschnaubend machen Sie sich auf den Weg zur internationalen Konferenz nach Timbuktu, aber am Flughafen FELD 15 wird gestreikt, also bleiben Sie dort.",
+    "text":"Ihr Erzfeind hat Ihre Theorie zunichte gemacht. Wutschnaubend machen Sie sich auf den Weg zur internationalen Konferenz nach Timbuktu, aber am Flughafen wird gestreikt, also bleiben Sie dort.",
     "position":15
 
     },

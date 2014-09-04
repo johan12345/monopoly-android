@@ -5,12 +5,12 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  * Speichert die Eigenschaften eines Bahnhofsfeldes auf dem Spielfeld
  */
 public class StationSpace extends BuyableSpace {
-	
+	private static final long serialVersionUID = -7200382472306581997L;
 	private static final double BASE_RENT = 500;
 
 	@Override
-	public double getRent(Player player) {
-		return BASE_RENT * Math.pow(2, player.getStationCount() - 1);
+	public double getRent() {
+		return isMortgage() ? 0 : BASE_RENT * Math.pow(2, getOwner().getStationCount() - 1);
 	}
 
 	@Override

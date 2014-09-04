@@ -8,6 +8,7 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  *
  */
 public class MoveToChanceCard extends ChanceCard {
+	private static final long serialVersionUID = 2600106692955387546L;
 	private int spacePos;
 
 	/**

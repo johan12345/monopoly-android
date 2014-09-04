@@ -1,5 +1,7 @@
 package de.unikiel.programmierpraktikum.monopoly.utilities;
 
+import java.text.DecimalFormat;
+
 import de.unikiel.programmierpraktikum.monopoly.R;
 import de.unikiel.programmierpraktikum.monopoly.model.Player.Peg;
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
@@ -20,6 +22,10 @@ public class Utilities {
 
 	public static int dice() {
 		return randomInt(1,6) + randomInt(1,6);
+	}
+	
+	public static boolean diceDouble() {
+		return randomInt(1,6) == randomInt(1,6);
 	}
 
 	public static int dpToPx(int dp, Context context) {
@@ -87,5 +93,9 @@ public class Utilities {
 		case DARK_BLUE: return R.color.category_dark_blue;		
 		default: return -1;
 		}
+	}
+	
+	public static DecimalFormat moneyFormat() {
+		return new DecimalFormat("#,##0 eV");
 	}
 }

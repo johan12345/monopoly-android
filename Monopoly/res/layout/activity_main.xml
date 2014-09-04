@@ -42,15 +42,73 @@
         </FrameLayout>
     </HorizontalScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp" >
+        android:layout_height="64dp"
+        android:padding="8dp" >
 
-        <Button
-            android:id="@+id/btnThrowDice"
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btnThrowDice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Würfeln" />
+
+            <Button
+                android:id="@+id/btnProperty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eigentum verwalten" />
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weiter" />
+
+            <Button
+                android:id="@+id/btnBail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Freikaufen" />
+
+        </LinearLayout>
+        
+        <ImageView
+	        android:id="@+id/player_bg"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/buttons" />
+    
+    	<ImageView
+	        android:id="@+id/player"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/buttons" />
+
+        <TextView
+            android:id="@+id/txtMoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Würfeln" />
-    </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="1 eV" />
+
+        <TextView
+            android:id="@+id/txtPlayerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/player"
+            android:layout_marginLeft="8dp"
+            android:text="Name" />
+
+    </RelativeLayout>
 
 </LinearLayout>

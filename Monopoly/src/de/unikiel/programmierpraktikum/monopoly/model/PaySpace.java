@@ -1,6 +1,7 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 public class PaySpace extends Space {
+	private static final long serialVersionUID = -4109328055644121861L;
 	private double amount;
 
 	/**

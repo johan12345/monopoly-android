@@ -9,4 +9,6 @@ package de.unikiel.programmierpraktikum.monopoly.model;
  */
 public class FreeParkingSpace extends Space {
 
+	private static final long serialVersionUID = -1825621619858131897L;
+
 }
