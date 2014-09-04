@@ -1,5 +1,6 @@
 package de.unikiel.programmierpraktikum.monopoly.view;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,6 +8,8 @@ import java.util.List;
 
 import de.unikiel.programmierpraktikum.monopoly.R;
 import de.unikiel.programmierpraktikum.monopoly.controller.GameController;
+import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler;
+import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler.SaveGame;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToEditHousesException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToRaiseMortgageException;
@@ -16,11 +19,11 @@ import de.unikiel.programmierpraktikum.monopoly.model.StationSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.UtilitySpace;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
+import de.unikiel.programmierpraktikum.monopoly.view.GameActivity.Status;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,26 +39,43 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class ManagePropertyActivity extends Activity {
-	private MonopolyApplication app;
 	private GameController controller;
 	private List<BuyableSpace> property;
 	private ListView list;
 	private PropertyAdapter adapter;
+	private Status status;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_property);
 
-		app = (MonopolyApplication) getApplication();
-		controller = app.getGameController();
-		property = controller.getGame().getProperty(
-				controller.whoseTurnIsIt().getPlayer());
-		Collections.sort(property, new SpaceComparator());
-		Log.d("monopoly", String.valueOf(property.size()));
-		list = (ListView) findViewById(R.id.list);
-		adapter = new PropertyAdapter(this);
-		list.setAdapter(adapter);
+		SaveGame savegame = null;
+		try {
+			savegame = new SaveGameHandler().loadGame(this, "test.game");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (savegame != null) {
+			controller = savegame.getController();
+			status = savegame.getStatus();
+			property = controller.getGame().getProperty(
+					controller.whoseTurnIsIt().getPlayer());
+			Collections.sort(property, new SpaceComparator());
+			list = (ListView) findViewById(R.id.list);
+			adapter = new PropertyAdapter(this);
+			list.setAdapter(adapter);
+		} else {
+			finish();
+		}
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		new SaveGameHandler().saveGame(this, new SaveGame(controller, status), "test.game");
 	}
 
 	private class PropertyAdapter extends ArrayAdapter<BuyableSpace> {

@@ -19,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="192dp"
+        android:layout_marginTop="-24dp"
+        android:textSize="180dp"
         android:fontFamily="sans-serif-thin"
         android:text="\?" />
 

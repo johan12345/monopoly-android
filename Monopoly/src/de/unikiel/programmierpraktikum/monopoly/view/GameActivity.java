@@ -1,16 +1,9 @@
 package de.unikiel.programmierpraktikum.monopoly.view;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,6 +36,8 @@ import de.unikiel.programmierpraktikum.monopoly.R;
 import de.unikiel.programmierpraktikum.monopoly.controller.GameController;
 import de.unikiel.programmierpraktikum.monopoly.controller.GameFieldLoader;
 import de.unikiel.programmierpraktikum.monopoly.controller.PlayerController;
+import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler;
+import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler.SaveGame;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
 import de.unikiel.programmierpraktikum.monopoly.model.BuyableSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.ChanceCard;
@@ -54,7 +48,7 @@ import de.unikiel.programmierpraktikum.monopoly.model.Game;
 import de.unikiel.programmierpraktikum.monopoly.model.GoToJailChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.GoToJailSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.JailSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.PayChanceCard;
+import de.unikiel.programmierpraktikum.monopoly.model.MoveAmountChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.PaySpace;
 import de.unikiel.programmierpraktikum.monopoly.model.Player;
 import de.unikiel.programmierpraktikum.monopoly.model.Player.Peg;
@@ -63,7 +57,6 @@ import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
 public class GameActivity extends Activity {
-	private MonopolyApplication app;
 	private Game game;
 	private GameController controller;
 	private HorizontalScrollView fieldScroller;
@@ -80,7 +73,7 @@ public class GameActivity extends Activity {
 	private ImageView imgPlayer;
 	private ImageView imgPlayerBg;
 
-	private enum Status {
+	public enum Status {
 		DICE_NOT_THROWN, DICE_THROWN, JAIL_THROW_DICE, JAIL_DO_NOT_THROW_DICE, LACK_OF_MONEY
 	}
 
@@ -90,60 +83,53 @@ public class GameActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		app = (MonopolyApplication) getApplication();
+		setupViews();
 
 		viewCreator = new ViewCreator(this);
-		File file = new File(getFilesDir(), "test.game");
-		// if (file.exists()) {
-		// Log.d("monopoly", "reading");
-		// FileInputStream fis;
-		// try {
-		// fis = new FileInputStream(file);
-		// ObjectInputStream ois = new ObjectInputStream(fis);
-		// controller = (GameController) ois.readObject();
-		// status = Status.values()[ois.readInt()];
-		// Log.d("monopoly", "status: " + status.toString());
-		// ois.close();
-		// fis.close();
-		// if (controller != null) {
-		// buildField();
-		// buildPlayers();
-		// refresh();
-		// }
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// } catch (ClassNotFoundException e) {
-		// e.printStackTrace();
-		// }
-		// } else {
-		try {
-			String field = readStream(getAssets().open("field/field.json"));
-			String chanceCards = readStream(getAssets().open(
-					"chance_cards/chance_cards.json"));
-			String communityCards = readStream(getAssets().open(
-					"chance_cards/community_cards.json")); // TODO:
-			List<Player> players = new ArrayList<Player>();
-			Player einstein = new Player("Einstein", Peg.ALBERT_EINSTEIN);
-			players.add(einstein);
-			players.add(new Player("Heisenberg", Peg.WERNER_HEISENBERG));
 
-			game = GameFieldLoader.createGame(field, chanceCards,
-					communityCards, players);
-			controller = new GameController(game);
-			app.setGameController(controller);
-			controller.giveStartMoney();
-			((StreetSpace) game.getSpaces().get(37)).setOwner(einstein);
-			((StreetSpace) game.getSpaces().get(39)).setOwner(einstein);
-			setupViews();
-			buildField();
-			buildPlayers();
+		// Load old game if it exists
+		SaveGame savegame = null;
+		try {
+			savegame = new SaveGameHandler().loadGame(this, "test.game");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if (savegame != null) {
+			controller = savegame.getController();
+			game = controller.getGame();
+			setStatus(savegame.getStatus());
+			buildField();
+			buildPlayers();
+			refresh();
+		} else {
+			try {
+				String field = readStream(getAssets().open("field/field.json"));
+				String chanceCards = readStream(getAssets().open(
+						"chance_cards/chance_cards.json"));
+				String communityCards = readStream(getAssets().open(
+						"chance_cards/community_cards.json")); // TODO:
+				List<Player> players = new ArrayList<Player>();
+				Player einstein = new Player("Einstein", Peg.ALBERT_EINSTEIN);
+				players.add(einstein);
+				players.add(new Player("Heisenberg", Peg.WERNER_HEISENBERG));
 
-		refreshTextFields();
-		setStatus(Status.DICE_NOT_THROWN);
-		// }
+				game = GameFieldLoader.createGame(field, chanceCards,
+						communityCards, players);
+				controller = new GameController(game);
+				controller.giveStartMoney();
+				((StreetSpace) game.getSpaces().get(37)).setOwner(einstein);
+				((StreetSpace) game.getSpaces().get(39)).setOwner(einstein);
+				buildField();
+				buildPlayers();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			refreshTextFields();
+			setStatus(Status.DICE_NOT_THROWN);
+		}
 
 		btnThrowDice.setOnClickListener(new OnClickListener() {
 
@@ -194,7 +180,7 @@ public class GameActivity extends Activity {
 					refreshTextFields();
 				} catch (LackOfMoneyException e) {
 					if (controller.whoseTurnIsIt().getPlayer().getJailCounter() == 4) {
-						
+
 					} else {
 						Toast toast = Toast
 								.makeText(
@@ -363,7 +349,8 @@ public class GameActivity extends Activity {
 				try {
 					rent = player.payRent();
 					if (rent != 0) {
-						String rentString = Utilities.moneyFormat().format(rent);
+						String rentString = Utilities.moneyFormat()
+								.format(rent);
 						Toast toast = Toast.makeText(GameActivity.this,
 								"Sie haben "
 										+ rentString
@@ -374,8 +361,7 @@ public class GameActivity extends Activity {
 						toast.show();
 					}
 				} catch (LackOfMoneyException e) {
-					if (player.getFunds() < ((BuyableSpace) space)
-							.getRent())
+					if (player.getFunds() < ((BuyableSpace) space).getRent())
 						showBankruptDialog(player);
 					else
 						setStatus(Status.LACK_OF_MONEY);
@@ -447,6 +433,11 @@ public class GameActivity extends Activity {
 											animatePlayerToPosition(player,
 													false, false);
 											animatePlayerToJail(player, true);
+										} else if (card instanceof MoveAmountChanceCard
+												&& ((MoveAmountChanceCard) card)
+														.getAmount() < 0) {
+											animatePlayerToPosition(player,
+													true, false);
 										} else {
 											animatePlayerToPosition(player);
 										}
@@ -473,7 +464,7 @@ public class GameActivity extends Activity {
 		if (funds >= amount) {
 			if (status != Status.JAIL_DO_NOT_THROW_DICE)
 				setStatus(Status.LACK_OF_MONEY);
-			
+
 			Toast toast = Toast.makeText(GameActivity.this,
 					"Sie haben nicht genug Geld, um dies zu bezahlen!",
 					Toast.LENGTH_SHORT);
@@ -536,13 +527,21 @@ public class GameActivity extends Activity {
 			animateFieldScroll(scrollPos, 800, null);
 		} else {
 			final int maxScroll = spaces.getWidth();
-			Log.d("monopoly", "maxScroll " + maxScroll);
-			Bitmap bitmap = Utilities.loadBitmapFromView(spaces);
-			bitmap = Bitmap.createBitmap(bitmap, 0, 0, scrollPos
-					+ fieldScroller.getWidth(), bitmap.getHeight());
-			final ImageView view = new ImageView(this);
-			view.setImageBitmap(bitmap);
-			spaces.addView(view);
+			
+			// Create fake views to make it look like the field scrolls
+			// over the right end back to the start
+			final List<View> fakeViews = new ArrayList<View>();
+			for (int i = 0; i < spaces.getChildCount(); i++) {
+				Bitmap bitmap = Utilities.loadBitmapFromView(spaces
+						.getChildAt(i));
+				ImageView view = new ImageView(this);
+				view.setImageBitmap(bitmap);
+				fakeViews.add(view);
+			}
+
+			for (View view : fakeViews) {
+				spaces.addView(view);
+			}
 
 			ViewTreeObserver vto = spaces.getViewTreeObserver();
 			vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -550,17 +549,15 @@ public class GameActivity extends Activity {
 				public void onGlobalLayout() {
 					spaces.getViewTreeObserver().removeGlobalOnLayoutListener(
 							this);
-					ObjectAnimator animator = ObjectAnimator.ofInt(
-							fieldScroller, "scrollX", maxScroll + scrollPos);
-					animator.setDuration(800);
-					animator.addListener(new AnimatorListenerAdapter() {
+					animateFieldScroll(maxScroll + scrollPos, 800, new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator animation) {
 							fieldScroller.scrollTo(scrollPos, 0);
-							spaces.removeView(view);
+							for (View view : fakeViews) {
+								spaces.removeView(view);
+							}
 						}
 					});
-					animator.start();
 				}
 			});
 		}
@@ -710,21 +707,8 @@ public class GameActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		File file = new File(getFilesDir(), "test.game");
-		Log.d("monopoly", "saving");
-		try {
-			file.createNewFile();
-			FileOutputStream fos = new FileOutputStream(file);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(controller);
-			oos.writeInt(status.ordinal());
-			oos.close();
-			fos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new SaveGameHandler().saveGame(this, new SaveGame(controller, status),
+				"test.game");
 	}
 
 }
