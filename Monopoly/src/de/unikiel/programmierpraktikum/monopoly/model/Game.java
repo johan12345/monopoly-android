@@ -19,8 +19,20 @@ public class Game implements Serializable {
 	private ArrayList<Space> spaces;
 	private ArrayList<ChanceCard> chanceCards;
 	private ArrayList<ChanceCard> communityCards;
-	public final static double SALARY = 4000;
+	
+    /**
+	 * The amount of money someone obtains when stepping on or over Go space.
+	 */
+    public final static double SALARY = 4000;
+    
+    /**
+	 * The amount of money every player gets at the beginning of the game.
+	 */
 	public final static double START_MONEY = 30000;
+    
+    /**
+	 * The amount of money to be payed when one wants to leave the jail.
+	 */
 	public final static double JAIL_BAIL = 1000;
 	
 	/**
@@ -48,7 +60,7 @@ public class Game implements Serializable {
 		this.spaces = new ArrayList<Space>(spaces);
 	}
 	/**
-	 * @return the chanceCards
+	 * @return chance card, then "put the card under the stack", removes the first card from the list and puts it at the end.
 	 */
 	public ChanceCard getChanceCard() {
 		ChanceCard card = chanceCards.get(0);
@@ -63,7 +75,7 @@ public class Game implements Serializable {
 		this.chanceCards = new ArrayList<ChanceCard>(chanceCards);
 	}
 	/**
-	 * @return the communityCards
+	 * @return community card, then "put the card under the stack", removes the first card from the list and puts it at the end.
 	 */
 	public ChanceCard getCommunityCard() {
 		ChanceCard card = communityCards.get(0);
@@ -78,7 +90,11 @@ public class Game implements Serializable {
 		this.communityCards = new ArrayList<ChanceCard>(communityCards);
 	}
 	
-	public int getJailPos() {
+	
+    /**
+	 * Looks for the jail space and returns its position amongst all spaces. If there is no jail space in the list of spaces, then it returns a nonsensical value, since there is supposed to be a jail space.
+	 */
+    public int getJailPos() {
 		for(int i = 0; i < spaces.size(); i++) {
 			if(spaces.get(i) instanceof JailSpace)
 				return i;
@@ -86,19 +102,22 @@ public class Game implements Serializable {
 		return -1;
 	}
 	/**
-	 * @return the chanceCards
+	 * @return the chance cards
 	 */
 	public List<ChanceCard> getChanceCards() {
 		return chanceCards;
 	}
 	/**
-	 * @return the communityCards
+	 * @return the community cards
 	 */
 	public List<ChanceCard> getCommunityCards() {
 		return communityCards;
 	}
 	
-	public List<BuyableSpace> getProperty(Player player) {
+	/**
+	 * @return all buyable spaces a player owns.
+	 */
+    public List<BuyableSpace> getProperty(Player player) {
 		List<BuyableSpace> property = new ArrayList<BuyableSpace>();
 		for (Space space:spaces) {
 			if (space instanceof BuyableSpace) {

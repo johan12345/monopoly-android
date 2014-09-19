@@ -9,12 +9,15 @@ import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
 
 /**
  * @author Miriam Scharnke, Johan v. Forstner
- * Speichert die Eigenschaften eines Spielers, z.B. Position
+ * Saves the characteristics of the players: Position, amount of money, peg, name, property, index, debt and whether or not he is currently in jail or has lost.
  */
 public class Player implements Serializable {
 	private static final long serialVersionUID = 8343266192449232070L;
 
-	public enum Peg {
+	/**
+     * All possible pegs.
+     */
+    public enum Peg {
 		MARIE_CURIE, EMMY_NOETHER, ALBERT_EINSTEIN, MAX_PLANCK, RICHARD_FEYNMAN, STEPHEN_HAWKING, ERWIN_SCHROEDINGER, MICHAEL_FARADAY, WOLFGANG_PAULI, WERNER_HEISENBERG
 	}
 	private int currentPos;
@@ -27,7 +30,10 @@ public class Player implements Serializable {
 	private boolean hasLost;
 	private double debt;
 	
-	public Player(String name, Peg peg) {
+	/**
+     * Characteristics of a new player.
+     */
+    public Player(String name, Peg peg) {
 		this.name = name;
 		this.peg = peg;
 		money = 0;
@@ -38,7 +44,7 @@ public class Player implements Serializable {
 	}
 	
 	/**
-	 * @return the currentPos
+	 * @return the current position
 	 */
 	public int getCurrentPos() {
 		return currentPos;
@@ -50,7 +56,7 @@ public class Player implements Serializable {
 		this.currentPos = currentPos;
 	}
 	/**
-	 * @return the money
+	 * @return the amount of money somebody owns.
 	 */
 	public double getMoney() {
 		return money;

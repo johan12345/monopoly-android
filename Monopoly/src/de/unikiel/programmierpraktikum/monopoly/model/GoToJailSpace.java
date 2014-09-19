@@ -5,7 +5,7 @@ package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
  * @author Miriam Scharnke, Johan v. Forstner
- * Speichert die Eigenschaften des "Gehe ins Gefängnis"-Feldes auf dem Spielfeld
+ * Saves the characteristics of the GoToJailSpace, where a player will be sent to jail when stepping upon it.
  */
 public class GoToJailSpace extends Space {
 

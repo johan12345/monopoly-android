@@ -4,7 +4,7 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * One sort of (@Link CommunityChanceCard); the one where you get money from everyone else,
+ * One sort of (@Link ChanceCard); the one where you get money from everyone else,
  * usually for your birthday, hence the name.
  *
  * @author Johan v. Forstner, Miriam Scharnke
