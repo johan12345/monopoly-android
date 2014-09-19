@@ -353,13 +353,17 @@ public class PlayerController implements Serializable {
 	}
 
 	/**
-	 * Make this player lose the game
+	 * Make this player lose the game and return all his property to the bank
 	 * 
 	 * @return If there is only one player left, the last player in the game.
 	 *         Otherwise null.
 	 */
 	public Player lose() {
 		player.setHasLost();
+		for (BuyableSpace space:game.getProperty(player)) {
+			space.setOwner(null);
+			space.setMortgage(false);
+		}
 		int count = 0;
 		Player lastPlayer = null;
 		for (Player player : game.getPlayers()) {
