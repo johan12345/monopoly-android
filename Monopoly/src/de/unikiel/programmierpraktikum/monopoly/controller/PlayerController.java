@@ -176,8 +176,9 @@ public class PlayerController implements Serializable {
 	 *            the space to remove houses from
 	 * @throws UnableToEditHousesException
 	 *             when the space or other spaces in this category are not owned
-	 *             by the player, there is already a hotel, or the other spaces
-	 *             of this group don't have an allowed count of houses
+	 *             by the player, there are no houses on this space, or the
+	 *             other spaces of this group don't have an allowed count of
+	 *             houses
 	 */
 	public void removeHouse(StreetSpace space)
 			throws UnableToEditHousesException {
@@ -190,6 +191,19 @@ public class PlayerController implements Serializable {
 		}
 	}
 
+	/**
+	 * Create or cancel a mortgage a specific space
+	 * 
+	 * @param mortgage
+	 *            If you want to create or cancel the mortgage
+	 * @param space
+	 *            The space you want to set the mortgage on
+	 * @throws LackOfMoneyException
+	 *             If you don't have enough money to cancel the mortgage
+	 * @throws UnableToRaiseMortgageException
+	 *             If you don't own the space or the mortgage parameter already
+	 *             matches the current state
+	 */
 	public void setMortgage(boolean mortgage, BuyableSpace space)
 			throws LackOfMoneyException, UnableToRaiseMortgageException {
 		if (space.isMortgage() != mortgage && player.equals(space.getOwner())) {
@@ -204,6 +218,16 @@ public class PlayerController implements Serializable {
 		}
 	}
 
+	/**
+	 * Execute a {@link ChanceCard} that the player got from a
+	 * {@link ChanceSpace}
+	 * 
+	 * @param card
+	 *            The chance card to execute
+	 * @throws LackOfMoneyException
+	 *             When the player doesn't have enough money to execute this
+	 *             card
+	 */
 	public void executeChanceCard(ChanceCard card) throws LackOfMoneyException {
 		if (card instanceof PayChanceCard) {
 			player.pay(((PayChanceCard) card).getAmount());
@@ -237,73 +261,96 @@ public class PlayerController implements Serializable {
 		}
 	}
 
-	public double payRent() throws LackOfMoneyException {
-		if (getCurrentSpace() instanceof BuyableSpace
-				&& ((BuyableSpace) getCurrentSpace()).getOwner() != null
-				&& !((BuyableSpace) getCurrentSpace()).getOwner()
-						.equals(player)) {
-			BuyableSpace space = (BuyableSpace) getCurrentSpace();
-			player.pay(space.getRent());
-			space.getOwner().earn(space.getRent());
-			return space.getRent();
+	/**
+	 * Pay the rent on the current space
+	 * 
+	 * @return the amount of rent paid (0 if the space is mortgaged, has no
+	 *         owner or is the player's own property)
+	 * @throws LackOfMoneyException
+	 *             If the player doesn't have enough money to pay the rent
+	 * @throws WrongSpaceException
+	 *             when the current space is not buyable
+	 */
+	public double payRent() throws LackOfMoneyException, WrongSpaceException {
+		if (getCurrentSpace() instanceof BuyableSpace) {
+			if (((BuyableSpace) getCurrentSpace()).getOwner() != null
+					&& !((BuyableSpace) getCurrentSpace()).getOwner().equals(
+							player)) {
+				BuyableSpace space = (BuyableSpace) getCurrentSpace();
+				player.pay(space.getRent());
+				space.getOwner().earn(space.getRent());
+				return space.getRent();
+			} else {
+				return 0;
+			}
 		} else {
-			// TODO: Exception
-			return 0;
+			throw new WrongSpaceException();
 		}
 	}
 
+	/**
+	 * Go to and enter the Jail
+	 */
 	public void goToJail() {
 		moveTo(game.getJailPos(), false);
 		player.setInJail(1);
 	}
 
-	public void payPaySpace() throws LackOfMoneyException {
+	/**
+	 * Pay the amount requested by a {@link PaySpace}
+	 * 
+	 * @throws LackOfMoneyException
+	 *             If the player doesn't have enough money to pay the amount
+	 * @throws WrongSpaceException
+	 *             If the current space is not a PaySpace
+	 */
+	public void payPaySpace() throws LackOfMoneyException, WrongSpaceException {
 		if (getCurrentSpace() instanceof PaySpace) {
 			player.pay(((PaySpace) getCurrentSpace()).getAmount());
 		} else {
-			// TODO: Exception
+			throw new WrongSpaceException();
 		}
 	}
 
+	/**
+	 * @return the {@link Space} the player is currently on.
+	 */
 	public Space getCurrentSpace() {
 		return game.getSpaces().get(player.getCurrentPos());
 	}
 
 	/**
-	 * @return the player
+	 * @return the Player this PlayerController is controlling
 	 */
 	public Player getPlayer() {
 		return player;
 	}
 
 	/**
-	 * @param player
-	 *            the player to set
-	 */
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	/**
-	 * @return the game
+	 * @return the Game this PlayerController belongs to
 	 */
 	public Game getGame() {
 		return game;
 	}
 
 	/**
-	 * @param game
-	 *            the game to set
+	 * Pay the bail in order to escape the {@link JailSpace}
+	 * 
+	 * @throws LackOfMoneyException
+	 *             If the player doesn't have enough money
 	 */
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
 	public void payBail() throws LackOfMoneyException {
 		player.pay(Game.JAIL_BAIL);
 		player.setInJail(0);
 	}
 
+	/**
+	 * Get the funds of this player, which is the amount of money he has plus
+	 * the value of all the houses/hotels he could sell and the sum of the
+	 * mortgage values of all his property
+	 * 
+	 * @return
+	 */
 	public double getFunds() {
 		double funds = player.getMoney();
 		for (BuyableSpace space : game.getProperty(player)) {
@@ -317,6 +364,12 @@ public class PlayerController implements Serializable {
 		return funds;
 	}
 
+	/**
+	 * Make this player lose the game
+	 * 
+	 * @return If there is only one player left, the last player in the game.
+	 *         Otherwise null.
+	 */
 	public Player lose() {
 		player.setHasLost();
 		int count = 0;

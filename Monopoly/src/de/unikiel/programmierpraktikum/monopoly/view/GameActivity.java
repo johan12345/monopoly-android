@@ -34,7 +34,9 @@ import de.unikiel.programmierpraktikum.monopoly.controller.GameController;
 import de.unikiel.programmierpraktikum.monopoly.controller.PlayerController;
 import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler;
 import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler.SaveGame;
+import de.unikiel.programmierpraktikum.monopoly.exceptions.AlreadyBoughtException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
+import de.unikiel.programmierpraktikum.monopoly.exceptions.WrongSpaceException;
 import de.unikiel.programmierpraktikum.monopoly.model.BuyableSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.ChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.ChanceSpace;
@@ -83,7 +85,7 @@ public class GameActivity extends Activity {
 
 		SaveGame savegame = null;
 		try {
-			savegame = new SaveGameHandler().loadGame(this, "test.game");
+			savegame = SaveGameHandler.loadGame(this, "test.game");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -262,6 +264,10 @@ public class GameActivity extends Activity {
 									"Sie haben nicht genug Geld, um das Feld zu kaufen!",
 									Toast.LENGTH_SHORT);
 					toast.show();
+				} catch (AlreadyBoughtException e) {
+					// won't happen
+				} catch (WrongSpaceException e) {
+					// won't happen
 				}
 			}
 		});
@@ -397,6 +403,8 @@ public class GameActivity extends Activity {
 					}
 				} catch (LackOfMoneyException e) {
 					handleLackOfMoney(e, player);
+				} catch (WrongSpaceException e) {
+					// won't happen
 				}
 			}
 		} else if (space instanceof FreeParkingSpace) {
@@ -454,6 +462,8 @@ public class GameActivity extends Activity {
 				player.payPaySpace();
 			} catch (LackOfMoneyException e) {
 				handleLackOfMoney(e, player);
+			} catch (WrongSpaceException e) {
+				// won't happen
 			}
 		}
 		refresh();
@@ -679,7 +689,7 @@ public class GameActivity extends Activity {
 		// Load old game if it exists
 		SaveGame savegame = null;
 		try {
-			savegame = new SaveGameHandler().loadGame(this, "test.game");
+			savegame = SaveGameHandler.loadGame(this, "test.game");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -708,8 +718,12 @@ public class GameActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		if (controller != null && game != null)
-			new SaveGameHandler().saveGame(this, new SaveGame(controller,
-					status), "test.game");
+			try {
+				SaveGameHandler.saveGame(this, new SaveGame(controller,
+						status), "test.game");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 
 }

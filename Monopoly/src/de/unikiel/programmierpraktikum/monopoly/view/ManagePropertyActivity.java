@@ -53,7 +53,7 @@ public class ManagePropertyActivity extends Activity {
 
 		SaveGame savegame = null;
 		try {
-			savegame = new SaveGameHandler().loadGame(this, "test.game");
+			savegame = SaveGameHandler.loadGame(this, "test.game");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -84,7 +84,11 @@ public class ManagePropertyActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		new SaveGameHandler().saveGame(this, new SaveGame(controller, status), "test.game");
+		try {
+			SaveGameHandler.saveGame(this, new SaveGame(controller, status), "test.game");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private class PropertyAdapter extends ArrayAdapter<BuyableSpace> {
