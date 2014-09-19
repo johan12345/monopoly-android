@@ -7,7 +7,7 @@
 <View
     android:id="@+id/category"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="64dp"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true"
@@ -49,5 +49,44 @@
     android:text="Large Hadron Collider"
     android:gravity="center_horizontal"
     android:textSize="28sp" />
+
+	<LinearLayout
+	    android:id="@+id/houses"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/category"
+	    android:layout_marginBottom="16dp"
+	    android:layout_centerInParent="true" >
+
+	    <ImageView
+	        android:id="@+id/imgHouse1"
+	        android:layout_width="36dp"
+	        android:layout_height="36dp"
+	        android:src="@drawable/ic_house1" />
+
+	    <ImageView
+	        android:id="@+id/imgHouse2"
+	        android:layout_width="36dp"
+	        android:layout_height="36dp"
+	        android:src="@drawable/ic_house2" />
+
+	    <ImageView
+	        android:id="@+id/imgHouse3"
+	        android:layout_width="36dp"
+	        android:layout_height="36dp"
+	        android:src="@drawable/ic_house3" />
+
+	    <ImageView
+	        android:id="@+id/imgHouse4"
+	        android:layout_width="36dp"
+	        android:layout_height="36dp"
+	        android:src="@drawable/ic_house4" />
+
+	    <ImageView
+	        android:id="@+id/imgHotel"
+	        android:layout_width="36dp"
+	        android:layout_height="36dp"
+	        android:src="@drawable/ic_hotel" />
+	</LinearLayout>
 
 </RelativeLayout>

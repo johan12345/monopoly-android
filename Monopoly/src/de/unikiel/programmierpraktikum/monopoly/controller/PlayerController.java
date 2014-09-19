@@ -11,7 +11,6 @@ import de.unikiel.programmierpraktikum.monopoly.model.BuyableSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.ChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.Game;
 import de.unikiel.programmierpraktikum.monopoly.model.GoToJailChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.GoToJailSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.MoveAmountChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.MoveToChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.PayChanceCard;
@@ -77,9 +76,9 @@ public class PlayerController implements Serializable {
 		if (getCurrentSpace() instanceof BuyableSpace
 				&& ((BuyableSpace) getCurrentSpace()).getOwner() == null) {
 			BuyableSpace space = (BuyableSpace) getCurrentSpace();
+			player.pay(space.getPurchasePrice());
 			space.setOwner(player);
 			player.getProperty().add(space);
-			player.pay(space.getPurchasePrice());
 		} else {
 			// TODO: Ausnahme
 		}
@@ -110,12 +109,12 @@ public class PlayerController implements Serializable {
 	public void setMortgage(boolean mortgage, BuyableSpace space)
 			throws LackOfMoneyException, UnableToRaiseMortgageException {
 		if (space.isMortgage() != mortgage && player.equals(space.getOwner())) {
-			space.setMortgage(mortgage);
 			if (mortgage) {
 				player.earn(space.getMortgageValue());
 			} else {
 				player.pay(space.getMortgageValue());
 			}
+			space.setMortgage(mortgage);
 		} else {
 			throw new UnableToRaiseMortgageException();
 		}
@@ -136,7 +135,7 @@ public class PlayerController implements Serializable {
 			for (BuyableSpace space : property) {
 				if (space instanceof StreetSpace) {
 					StreetSpace street = (StreetSpace) space;
-					amount += street.getHousesCount()
+					amount += street.getRealHousesCount()
 							* ((PayRenovationChanceCard) card).getHouseAmount();
 					amount += street.getHotelCount()
 							* ((PayRenovationChanceCard) card).getHotelAmount();
@@ -160,6 +159,7 @@ public class PlayerController implements Serializable {
 				&& !((BuyableSpace) getCurrentSpace()).getOwner().equals(player)) {
 			BuyableSpace space = (BuyableSpace) getCurrentSpace();
 			player.pay(space.getRent());
+			space.getOwner().earn(space.getRent());
 			return space.getRent();
 		} else {
 			// TODO: Exception

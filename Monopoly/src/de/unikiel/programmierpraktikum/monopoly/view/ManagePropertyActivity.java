@@ -124,6 +124,10 @@ public class ManagePropertyActivity extends Activity {
 			TextView rent = (TextView) view.findViewById(R.id.txtRent);
 			TextView housePrice = (TextView) view
 					.findViewById(R.id.txtHousePrice);
+			
+			plus.setOnClickListener(null);
+			minus.setOnClickListener(null);
+			mortgage.setOnCheckedChangeListener(null);
 
 			if (space instanceof StreetSpace)
 				color.setBackgroundResource(Utilities
@@ -140,8 +144,8 @@ public class ManagePropertyActivity extends Activity {
 			house3.setVisibility(houseVisibility(space, 3));
 			house4.setVisibility(houseVisibility(space, 4));
 			hotel.setVisibility(hotelVisibility(space));
-			plus.setVisibility(visibility(space instanceof StreetSpace));
-			minus.setVisibility(visibility(space instanceof StreetSpace));
+			plus.setVisibility(Utilities.visibility(space instanceof StreetSpace));
+			minus.setVisibility(Utilities.visibility(space instanceof StreetSpace));
 			mortgage.setChecked(space.isMortgage());
 			rent.setText("Miete: " + format.format(space.getRent()));
 			if (space instanceof StreetSpace) {
@@ -212,7 +216,7 @@ public class ManagePropertyActivity extends Activity {
 
 		private int houseVisibility(BuyableSpace space, int num) {
 			if (space instanceof StreetSpace) {
-				return visibility(((StreetSpace) space).getRealHousesCount() >= num);
+				return Utilities.visibility(((StreetSpace) space).getRealHousesCount() >= num);
 			} else {
 				return View.INVISIBLE;
 			}
@@ -220,14 +224,10 @@ public class ManagePropertyActivity extends Activity {
 
 		private int hotelVisibility(BuyableSpace space) {
 			if (space instanceof StreetSpace) {
-				return visibility(((StreetSpace) space).getHotelCount() == 1);
+				return Utilities.visibility(((StreetSpace) space).getHotelCount() == 1);
 			} else {
 				return View.INVISIBLE;
 			}
-		}
-
-		private int visibility(boolean visible) {
-			return visible ? View.VISIBLE : View.INVISIBLE;
 		}
 
 	}

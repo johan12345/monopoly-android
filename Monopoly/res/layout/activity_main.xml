@@ -65,6 +65,12 @@
                 android:text="Eigentum verwalten" />
 
             <Button
+                android:id="@+id/btnBuy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kaufen" />
+
+            <Button
                 android:id="@+id/btnNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

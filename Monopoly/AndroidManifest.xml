@@ -25,6 +25,14 @@
         <activity
             android:name=".view.ManagePropertyActivity"
             android:screenOrientation="landscape" />
+        
+        <activity
+            android:name=".view.SetupGameActivity"
+            android:screenOrientation="landscape" />
+        
+        <activity
+            android:name=".view.GameEndedActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

@@ -32,7 +32,7 @@ public class SaveGameHandler {
 	
 	public void saveGame(Context context, SaveGame game, String name) {
 		try {
-			FileOutputStream fos = context.openFileOutput("test.game",
+			FileOutputStream fos = context.openFileOutput(name,
 					Context.MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(game.controller);

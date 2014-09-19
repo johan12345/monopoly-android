@@ -92,7 +92,27 @@ public class ViewCreator {
 					.getCategory()));
 
 			setBuyableSpaceOwnerImage((BuyableSpace) space, spaceView);
+			
+			ImageView house1 = (ImageView) spaceView.findViewById(R.id.imgHouse1);
+			ImageView house2 = (ImageView) spaceView.findViewById(R.id.imgHouse2);
+			ImageView house3 = (ImageView) spaceView.findViewById(R.id.imgHouse3);
+			ImageView house4 = (ImageView) spaceView.findViewById(R.id.imgHouse4);
+			ImageView hotel = (ImageView) spaceView.findViewById(R.id.imgHotel);
+			
+			house1.setVisibility(houseVisibility(street, 1));
+			house2.setVisibility(houseVisibility(street, 2));
+			house3.setVisibility(houseVisibility(street, 3));
+			house4.setVisibility(houseVisibility(street, 4));
+			hotel.setVisibility(hotelVisibility(street));
 		}
+	}
+	
+	private int hotelVisibility(StreetSpace space) {
+		return Utilities.visibility(space.getHotelCount() == 1);
+	}
+
+	private int houseVisibility(StreetSpace space, int num) {
+		return Utilities.visibility(space.getRealHousesCount() >= num);
 	}
 
 	public View createSpaceView(Space space, ViewGroup container) {

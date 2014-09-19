@@ -1,9 +1,6 @@
 package de.unikiel.programmierpraktikum.monopoly.view;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.unikiel.programmierpraktikum.monopoly.R;
 import de.unikiel.programmierpraktikum.monopoly.controller.GameController;
-import de.unikiel.programmierpraktikum.monopoly.controller.GameFieldLoader;
 import de.unikiel.programmierpraktikum.monopoly.controller.PlayerController;
 import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler;
 import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler.SaveGame;
@@ -51,9 +47,7 @@ import de.unikiel.programmierpraktikum.monopoly.model.JailSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.MoveAmountChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.PaySpace;
 import de.unikiel.programmierpraktikum.monopoly.model.Player;
-import de.unikiel.programmierpraktikum.monopoly.model.Player.Peg;
 import de.unikiel.programmierpraktikum.monopoly.model.Space;
-import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
 public class GameActivity extends Activity {
@@ -70,11 +64,13 @@ public class GameActivity extends Activity {
 	private Button btnManageProperty;
 	private Button btnNext;
 	private Button btnBail;
+	private Button btnBuy;
 	private ImageView imgPlayer;
 	private ImageView imgPlayerBg;
+	private FrameLayout players;
 
 	public enum Status {
-		DICE_NOT_THROWN, DICE_THROWN, JAIL_THROW_DICE, JAIL_DO_NOT_THROW_DICE, LACK_OF_MONEY
+		DICE_NOT_THROWN, DICE_THROWN, DICE_THROWN_ON_BUYABLE, JAIL_THROW_DICE, JAIL_DO_NOT_THROW_DICE, LACK_OF_MONEY
 	}
 
 	private static final int SPACE_WIDTH = 225;
@@ -120,7 +116,12 @@ public class GameActivity extends Activity {
 					PlayerController player = controller.whoseTurnIsIt();
 					animatePlayerToPosition(player);
 				}
-				setStatus(Status.DICE_THROWN);
+				Space space = controller.whoseTurnIsIt().getCurrentSpace();
+				if (space instanceof BuyableSpace
+						&& ((BuyableSpace) space).getOwner() == null)
+					setStatus(Status.DICE_THROWN_ON_BUYABLE);
+				else
+					setStatus(Status.DICE_THROWN);
 			}
 
 		});
@@ -160,6 +161,18 @@ public class GameActivity extends Activity {
 					if (currentPlayer.getDebt() <= currentPlayer.getMoney()) {
 						try {
 							currentPlayer.pay(currentPlayer.getDebt());
+							Toast toast = Toast
+									.makeText(
+											GameActivity.this,
+											"Sie haben "
+													+ Utilities
+															.moneyFormat()
+															.format(currentPlayer
+																	.getDebt())
+													+ " ausstehende Zahlungen abbezahlt.",
+											Toast.LENGTH_SHORT);
+							toast.show();
+							currentPlayer.setDebt(0);
 						} catch (LackOfMoneyException e) {
 							// Should not happen
 						}
@@ -198,6 +211,23 @@ public class GameActivity extends Activity {
 			}
 		});
 
+		btnBuy.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				try {
+					controller.whoseTurnIsIt().buySpace();
+					refresh();
+				} catch (LackOfMoneyException e) {
+					Toast toast = Toast
+							.makeText(
+									GameActivity.this,
+									"Sie haben nicht genug Geld, um das Feld zu kaufen!",
+									Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			}
+		});
+
 	}
 
 	private void setStatus(Status status) {
@@ -207,26 +237,37 @@ public class GameActivity extends Activity {
 			btnThrowDice.setVisibility(View.VISIBLE);
 			btnNext.setVisibility(View.GONE);
 			btnBail.setVisibility(View.GONE);
+			btnBuy.setVisibility(View.GONE);
 			break;
 		case DICE_THROWN:
 			btnThrowDice.setVisibility(View.GONE);
 			btnNext.setVisibility(View.VISIBLE);
 			btnBail.setVisibility(View.GONE);
+			btnBuy.setVisibility(View.GONE);
+			break;
+		case DICE_THROWN_ON_BUYABLE:
+			btnThrowDice.setVisibility(View.GONE);
+			btnNext.setVisibility(View.VISIBLE);
+			btnBail.setVisibility(View.GONE);
+			btnBuy.setVisibility(View.VISIBLE);
 			break;
 		case JAIL_THROW_DICE:
 			btnThrowDice.setVisibility(View.VISIBLE);
 			btnNext.setVisibility(View.GONE);
 			btnBail.setVisibility(View.VISIBLE);
+			btnBuy.setVisibility(View.GONE);
 			break;
 		case JAIL_DO_NOT_THROW_DICE:
 			btnThrowDice.setVisibility(View.GONE);
 			btnNext.setVisibility(View.GONE);
 			btnBail.setVisibility(View.VISIBLE);
+			btnBuy.setVisibility(View.GONE);
 			break;
 		case LACK_OF_MONEY:
 			btnThrowDice.setVisibility(View.GONE);
 			btnNext.setVisibility(View.VISIBLE);
 			btnBail.setVisibility(View.GONE);
+			btnBuy.setVisibility(View.GONE);
 		}
 	}
 
@@ -317,48 +358,8 @@ public class GameActivity extends Activity {
 						toast.show();
 					}
 				} catch (LackOfMoneyException e) {
-					if (player.getFunds() < ((BuyableSpace) space).getRent())
-						showBankruptDialog(player);
-					else
-						setStatus(Status.LACK_OF_MONEY);
+					handleLackOfMoney(e, player);
 				}
-			} else {
-				new AlertDialog.Builder(this)
-						.setMessage(
-								"Sie sind auf "
-										+ space.getName()
-										+ " gelandet. Möchten Sie dieses Feld kaufen?")
-						.setCancelable(true)
-						.setPositiveButton("ja",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface arg0,
-											int arg1) {
-										try {
-											player.buySpace();
-											refresh();
-										} catch (LackOfMoneyException e) {
-											Toast toast = Toast
-													.makeText(
-															GameActivity.this,
-															"Sie haben nicht genug Geld, um das Feld zu kaufen!",
-															Toast.LENGTH_SHORT);
-											toast.show();
-										}
-									}
-
-								})
-						.setNegativeButton("nein",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-
-									}
-
-								}).create().show();
 			}
 		} else if (space instanceof FreeParkingSpace) {
 
@@ -397,6 +398,12 @@ public class GameActivity extends Activity {
 										} else {
 											animatePlayerToPosition(player);
 										}
+										Space space = player.getCurrentSpace();
+										if (space instanceof BuyableSpace
+												&& ((BuyableSpace) space).getOwner() == null)
+											setStatus(Status.DICE_THROWN_ON_BUYABLE);
+										else
+											setStatus(Status.DICE_THROWN);
 									} catch (LackOfMoneyException e) {
 										handleLackOfMoney(e, player);
 									}
@@ -420,30 +427,22 @@ public class GameActivity extends Activity {
 		if (funds >= amount) {
 			if (status != Status.JAIL_DO_NOT_THROW_DICE)
 				setStatus(Status.LACK_OF_MONEY);
-
+			player.getPlayer().setDebt(e.getMoneyToPay());
 			Toast toast = Toast.makeText(GameActivity.this,
 					"Sie haben nicht genug Geld, um dies zu bezahlen!",
 					Toast.LENGTH_SHORT);
 			toast.show();
 		} else {
-			Toast toast = Toast
-					.makeText(
-							GameActivity.this,
-							"Sie haben nicht genug Geld, um dies zu bezahlen! Sie haben verloren!",
-							Toast.LENGTH_LONG);
-			toast.show();
-			lose(player);
-			setStatus(Status.DICE_THROWN);
+			showBankruptDialog(player);
 		}
 	}
 
 	private void lose(PlayerController player) {
 		Player lastPlayer = player.lose();
 		if (lastPlayer != null) {
-			Toast toast = Toast
-					.makeText(GameActivity.this, lastPlayer.getName()
-							+ " hat gewonnen!", Toast.LENGTH_SHORT);
-			toast.show();
+			Intent intent = new Intent(this, GameEndedActivity.class);
+			intent.putExtra("playerName", lastPlayer.getName());
+			startActivity(intent);
 		}
 	}
 
@@ -483,21 +482,20 @@ public class GameActivity extends Activity {
 			animateFieldScroll(scrollPos, 800, null);
 		} else {
 			final int maxScroll = spaces.getWidth();
-
+			final LinearLayout fakeLayout = new LinearLayout(this);
 			// Create fake views to make it look like the field scrolls
 			// over the right end back to the start
-			final List<View> fakeViews = new ArrayList<View>();
+			List<View> fakeViews = new ArrayList<View>();
 			for (int i = 0; i < spaces.getChildCount(); i++) {
 				Bitmap bitmap = Utilities.loadBitmapFromView(spaces
 						.getChildAt(i));
 				ImageView view = new ImageView(this);
 				view.setImageBitmap(bitmap);
 				fakeViews.add(view);
+				fakeLayout.addView(view);
 			}
 
-			for (View view : fakeViews) {
-				spaces.addView(view);
-			}
+			spaces.addView(fakeLayout);
 
 			ViewTreeObserver vto = spaces.getViewTreeObserver();
 			vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -510,9 +508,7 @@ public class GameActivity extends Activity {
 								@Override
 								public void onAnimationEnd(Animator animation) {
 									fieldScroller.scrollTo(scrollPos, 0);
-									for (View view : fakeViews) {
-										spaces.removeView(view);
-									}
+									spaces.removeView(fakeLayout);
 								}
 							});
 				}
@@ -531,8 +527,6 @@ public class GameActivity extends Activity {
 	}
 
 	private void buildPlayers() {
-		final FrameLayout players = (FrameLayout) findViewById(R.id.players);
-		FrameLayout progressBars = (FrameLayout) findViewById(R.id.progressBars);
 		LayoutInflater inflater = getLayoutInflater();
 		int i = 0;
 		for (Player player : game.getPlayers()) {
@@ -607,8 +601,10 @@ public class GameActivity extends Activity {
 		btnManageProperty = (Button) findViewById(R.id.btnProperty);
 		btnNext = (Button) findViewById(R.id.btnNext);
 		btnBail = (Button) findViewById(R.id.btnBail);
+		btnBuy = (Button) findViewById(R.id.btnBuy);
 		imgPlayer = (ImageView) findViewById(R.id.player);
 		imgPlayerBg = (ImageView) findViewById(R.id.player_bg);
+		players = (FrameLayout) findViewById(R.id.players);
 	}
 
 	private void buildField() {
@@ -638,23 +634,6 @@ public class GameActivity extends Activity {
 				});
 	}
 
-	private static String readStream(InputStream input) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(input));
-		try {
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
-
-			while (line != null) {
-				sb.append(line);
-				sb.append("\n");
-				line = br.readLine();
-			}
-			return sb.toString();
-		} finally {
-			br.close();
-		}
-	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -671,43 +650,27 @@ public class GameActivity extends Activity {
 			controller = savegame.getController();
 			game = controller.getGame();
 			setStatus(savegame.getStatus());
+			clearFieldAndPlayers();
 			buildField();
 			buildPlayers();
 			refresh();
 		} else {
-			try {
-				String field = readStream(getAssets().open("field/field.json"));
-				String chanceCards = readStream(getAssets().open(
-						"chance_cards/chance_cards.json"));
-				String communityCards = readStream(getAssets().open(
-						"chance_cards/community_cards.json")); // TODO:
-				List<Player> players = new ArrayList<Player>();
-				Player einstein = new Player("Einstein", Peg.ALBERT_EINSTEIN);
-				players.add(einstein);
-				players.add(new Player("Heisenberg", Peg.WERNER_HEISENBERG));
-
-				game = GameFieldLoader.createGame(field, chanceCards,
-						communityCards, players);
-				controller = new GameController(game);
-				controller.giveStartMoney();
-				((StreetSpace) game.getSpaces().get(37)).setOwner(einstein);
-				((StreetSpace) game.getSpaces().get(39)).setOwner(einstein);
-				buildField();
-				buildPlayers();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			refreshTextFields();
-			setStatus(Status.DICE_NOT_THROWN);
+			Intent intent = new Intent(this, SetupGameActivity.class);
+			startActivity(intent);
 		}
+	}
+
+	private void clearFieldAndPlayers() {
+		spaces.removeAllViews();
+		players.removeAllViews();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		new SaveGameHandler().saveGame(this, new SaveGame(controller, status),
-				"test.game");
+		if (controller != null && game != null)
+			new SaveGameHandler().saveGame(this, new SaveGame(controller,
+					status), "test.game");
 	}
 
 }

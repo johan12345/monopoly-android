@@ -1,5 +1,9 @@
 package de.unikiel.programmierpraktikum.monopoly.utilities;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
 import de.unikiel.programmierpraktikum.monopoly.R;
@@ -97,5 +101,26 @@ public class Utilities {
 	
 	public static DecimalFormat moneyFormat() {
 		return new DecimalFormat("#,##0 eV");
+	}
+	
+	public static String readStream(InputStream input) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(input));
+		try {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);
+				sb.append("\n");
+				line = br.readLine();
+			}
+			return sb.toString();
+		} finally {
+			br.close();
+		}
+	}
+	
+	public static int visibility(boolean visible) {
+		return visible ? View.VISIBLE : View.INVISIBLE;
 	}
 }
