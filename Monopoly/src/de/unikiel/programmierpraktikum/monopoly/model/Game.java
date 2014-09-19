@@ -11,7 +11,7 @@ import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
 /**
  * @author Miriam Scharnke, Johan v. Forstner
- * Speichert die Spieler, das Spielfeld und ...
+ * Saves the players, the field, the spaces and the chance cards.
  */
 public class Game implements Serializable {
 	private static final long serialVersionUID = -8128552561059232122L;
