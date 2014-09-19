@@ -1,10 +1,9 @@
-/**
- * 
- */
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * One sort of (@Link ChanceCard); where a player will be sent to a different location depending on his current position.
+ * One sort of {@link ChanceCard}; where a player will be sent to a different
+ * location depending on his current position.
+ * 
  * @author Johan v. Forstner, Miriam Scharnke
  */
 public class MoveAmountChanceCard extends ChanceCard {
@@ -19,7 +18,8 @@ public class MoveAmountChanceCard extends ChanceCard {
 	}
 
 	/**
-	 * @param amount that amount to set
+	 * @param amount
+	 *            that amount to set
 	 */
 	public void setAmount(int amount) {
 		this.amount = amount;

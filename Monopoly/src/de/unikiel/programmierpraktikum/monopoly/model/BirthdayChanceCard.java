@@ -1,11 +1,8 @@
-/**
- * 
- */
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * One sort of (@Link ChanceCard); the one where you get money from everyone else,
- * usually for your birthday, hence the name.
+ * One sort of {@link ChanceCard}; the one where you get money from everyone
+ * else, usually for your birthday, hence the name.
  *
  * @author Johan v. Forstner, Miriam Scharnke
  */
@@ -21,7 +18,8 @@ public class BirthdayChanceCard extends ChanceCard {
 	}
 
 	/**
-	 * @param amount that amount to set
+	 * @param amount
+	 *            that amount to set
 	 */
 	public void setAmount(double amount) {
 		this.amount = amount;

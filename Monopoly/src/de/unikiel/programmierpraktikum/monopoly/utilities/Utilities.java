@@ -238,8 +238,8 @@ public class Utilities {
 	 * 
 	 * @param visible
 	 *            visible or not
-	 * @return {@link View.VISIBLE} if visible == true, otherwise
-	 *         {@link View.INVISIBLE}
+	 * @return {@link View#VISIBLE} if visible == true, otherwise
+	 *         {@link View#INVISIBLE}
 	 */
 	public static int visibility(boolean visible) {
 		return visible ? View.VISIBLE : View.INVISIBLE;

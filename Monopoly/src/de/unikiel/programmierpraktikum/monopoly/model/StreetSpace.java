@@ -1,8 +1,9 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
+ * Represents a street {@link Space}
+ * 
  * @author Miriam Scharnke, Johan v. Forstner
- * Speichert die Eigenschaften eines Straﬂen-Feldes auf dem Spielfeld
  */
 public class StreetSpace extends BuyableSpace {
 	private static final long serialVersionUID = 3101782499194398218L;

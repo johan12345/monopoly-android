@@ -1,11 +1,9 @@
-/**
- * 
- */
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
+ * Represents the jail {@link Space}, where a player can be imprisoned as well as visiting.
+ * 
  * @author Miriam Scharnke, Johan v. Forstner
- * Saves the characteristics of the jail space, where a player can be imprisoned as well as visiting.
  */
 public class JailSpace extends Space {
 

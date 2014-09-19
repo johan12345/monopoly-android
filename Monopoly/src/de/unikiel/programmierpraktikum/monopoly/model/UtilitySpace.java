@@ -1,8 +1,10 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
+ * Represents a utility {@link Space} (example in real Monopoly: electricity station, in
+ * our version: Large Hadron Collider)
+ * 
  * @author Miriam Scharnke, Johan v. Forstner
- * Speichert die Eigenschaften eines Versorgungswerkfeldes auf dem Spielfeld
  */
 public class UtilitySpace extends BuyableSpace {
 	private static final long serialVersionUID = -8160803779666052766L;
@@ -10,12 +12,13 @@ public class UtilitySpace extends BuyableSpace {
 
 	@Override
 	public double getRent() {
-		return isMortgage() ? 0 : BASE_RENT * Math.pow(2, getOwner().getUtilityCount() - 1);
+		return isMortgage() ? 0 : BASE_RENT
+				* Math.pow(2, getOwner().getUtilityCount() - 1);
 	}
 
 	@Override
 	public double getPurchasePrice() {
 		return BASE_RENT * 8;
 	}
-	
+
 }

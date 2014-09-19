@@ -4,8 +4,12 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
+ * 
+ * Describes the free parking space, where you can just stand around doing
+ * nothing.
+ * 
  * @author Miriam Scharnke, Johan v. Forstner
- * Contains the free parking space, where you can just stand around doing nothing.
+ * 
  */
 public class FreeParkingSpace extends Space {
 

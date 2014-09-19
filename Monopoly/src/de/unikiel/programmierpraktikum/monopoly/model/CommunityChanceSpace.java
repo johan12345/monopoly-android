@@ -1,11 +1,9 @@
-/**
- * 
- */
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
+ * Describes a community chance space.
+ * 
  * @author Miriam Scharnke, Johan v. Forstner
- * Saves the characteristics of a community chance space.
  */
 public class CommunityChanceSpace extends ChanceSpace {
 

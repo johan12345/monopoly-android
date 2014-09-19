@@ -1,10 +1,9 @@
-/**
- * 
- */
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * One sort of (@Link ChanceCard); where a player will be sent to a different, definitive location.
+ * One sort of {@link ChanceCard}; where a player will be sent to a different,
+ * definite location.
+ * 
  * @author Johan v. Forstner, Miriam Scharnke
  */
 public class MoveToChanceCard extends ChanceCard {
@@ -19,10 +18,11 @@ public class MoveToChanceCard extends ChanceCard {
 	}
 
 	/**
-	 * @param spacePos the spacePos to set
+	 * @param spacePos
+	 *            the spacePos to set
 	 */
 	public void setSpacePos(int spacePos) {
 		this.spacePos = spacePos;
 	}
-	
+
 }

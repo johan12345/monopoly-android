@@ -8,19 +8,7 @@ import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToEditHousesException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToRaiseMortgageException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.WrongSpaceException;
-import de.unikiel.programmierpraktikum.monopoly.model.BirthdayChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.BuyableSpace;
-import de.unikiel.programmierpraktikum.monopoly.model.ChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.Game;
-import de.unikiel.programmierpraktikum.monopoly.model.GoToJailChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.MoveAmountChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.MoveToChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.PayChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.PayRenovationChanceCard;
-import de.unikiel.programmierpraktikum.monopoly.model.PaySpace;
-import de.unikiel.programmierpraktikum.monopoly.model.Player;
-import de.unikiel.programmierpraktikum.monopoly.model.Space;
-import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace;
+import de.unikiel.programmierpraktikum.monopoly.model.*;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
 /**
@@ -349,7 +337,7 @@ public class PlayerController implements Serializable {
 	 * the value of all the houses/hotels he could sell and the sum of the
 	 * mortgage values of all his property
 	 * 
-	 * @return
+	 * @return the funds of this player
 	 */
 	public double getFunds() {
 		double funds = player.getMoney();
