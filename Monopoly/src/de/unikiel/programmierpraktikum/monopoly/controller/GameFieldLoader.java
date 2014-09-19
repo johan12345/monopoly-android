@@ -12,62 +12,72 @@ import de.unikiel.programmierpraktikum.monopoly.model.*;
 import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace.Category;
 
 /**
+ * Contains static methods for creating a Monopoly field and loading all the
+ * {@link ChanceCard}s and {@link Space}s from the JSON files
+ * 
  * @author Miriam Scharnke, Johan v. Forstner
- * Erstellt das Spielfeld und lädt die Spielfelder und Karten aus JSON-Dateien
  */
 public class GameFieldLoader {
-	
+
 	/**
+	 * Creates a new {@link Game}.
 	 * 
-	 * @param field JSON String for the field
-	 * @param chanceCards JSON String for the chance cards
-	 * @param communityCards JSON String for the community cards
-	 * @param players List of players
+	 * @param field
+	 *            JSON String for the field
+	 * @param chanceCards
+	 *            JSON String for the chance cards
+	 * @param communityCards
+	 *            JSON String for the community cards
+	 * @param players
+	 *            List of players
 	 * @return a new Game with all the attributes loaded
 	 */
-	public static Game createGame(String field, String chanceCards, String communityCards, List<Player> players) {
+	public static Game createGame(String field, String chanceCards,
+			String communityCards, List<Player> players) {
 		Game game = new Game();
 		game.setPlayers(players);
 		int i = 0;
-		for (Player player:game.getPlayers()) {
+		for (Player player : game.getPlayers()) {
 			player.setIndex(i);
 			i++;
 		}
 		game.setChanceCards(loadChanceCards(chanceCards));
-		game.setCommunityCards(loadChanceCards(communityCards));		
+		game.setCommunityCards(loadChanceCards(communityCards));
 		game.setSpaces(loadSpaces(field));
 		Collections.shuffle(game.getChanceCards());
 		Collections.shuffle(game.getCommunityCards());
 		return game;
 	}
-	
+
 	private static List<ChanceCard> loadChanceCards(String chanceCards) {
 		try {
 			JSONArray cards = new JSONArray(chanceCards);
 			List<ChanceCard> cardsList = new ArrayList<ChanceCard>();
-			for(int i = 0; i < cards.length(); i++) {
+			for (int i = 0; i < cards.length(); i++) {
 				JSONObject cardJson = cards.getJSONObject(i);
 				ChanceCard card = null;
 				String type = cardJson.getString("type");
-				if(type.equals("GoToJailChanceCard")) {
+				if (type.equals("GoToJailChanceCard")) {
 					GoToJailChanceCard goToJail = new GoToJailChanceCard();
 					card = goToJail;
-				} else if(type.equals("MoveAmountChanceCard")) {
+				} else if (type.equals("MoveAmountChanceCard")) {
 					MoveAmountChanceCard moveAmount = new MoveAmountChanceCard();
 					moveAmount.setAmount(cardJson.getInt("amount"));
 					card = moveAmount;
-				} else if(type.equals("MoveToChanceCard")) {
+				} else if (type.equals("MoveToChanceCard")) {
 					MoveToChanceCard moveTo = new MoveToChanceCard();
 					moveTo.setSpacePos(cardJson.getInt("position"));
 					card = moveTo;
-				} else if(type.equals("PayChanceCard")) {
+				} else if (type.equals("PayChanceCard")) {
 					PayChanceCard pay = new PayChanceCard();
 					pay.setAmount(cardJson.getDouble("payamount"));
 					card = pay;
-				} else if(type.equals("PayRenovationChanceCard")) {
+				} else if (type.equals("PayRenovationChanceCard")) {
 					PayRenovationChanceCard pay = new PayRenovationChanceCard();
-					pay.setHouseAmount(cardJson.getJSONArray("payamount").getDouble(0));
-					pay.setHotelAmount(cardJson.getJSONArray("payamount").getDouble(1));
+					pay.setHouseAmount(cardJson.getJSONArray("payamount")
+							.getDouble(0));
+					pay.setHotelAmount(cardJson.getJSONArray("payamount")
+							.getDouble(1));
 					card = pay;
 				} else if (type.equals("BirthdayChanceCard")) {
 					BirthdayChanceCard birthday = new BirthdayChanceCard();
@@ -88,18 +98,18 @@ public class GameFieldLoader {
 		try {
 			JSONArray spaces = new JSONArray(field);
 			List<Space> spacesList = new ArrayList<Space>();
-			for(int i = 0; i < spaces.length(); i++) {
+			for (int i = 0; i < spaces.length(); i++) {
 				JSONObject spaceJson = spaces.getJSONObject(i);
 				String type = spaceJson.getString("type");
 				Space space = null;
-				if(type.equals("go")) {
+				if (type.equals("go")) {
 					space = new GoSpace();
 				} else if (type.equals("street")) {
 					StreetSpace street = new StreetSpace();
 					street.setBaseRent(spaceJson.getDouble("base_rent"));
-					street.setName(spaceJson.getString("name"));					
+					street.setName(spaceJson.getString("name"));
 					String category = spaceJson.getString("category");
-					street.setCategory(Category.fromString(category));					
+					street.setCategory(Category.fromString(category));
 					space = street;
 				} else if (type.equals("pay")) {
 					PaySpace pay = new PaySpace();
@@ -127,7 +137,7 @@ public class GameFieldLoader {
 				}
 				spacesList.add(space);
 			}
-			
+
 			return spacesList;
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -3,9 +3,11 @@ package de.unikiel.programmierpraktikum.monopoly.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import de.unikiel.programmierpraktikum.monopoly.exceptions.AlreadyBoughtException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToEditHousesException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToRaiseMortgageException;
+import de.unikiel.programmierpraktikum.monopoly.exceptions.WrongSpaceException;
 import de.unikiel.programmierpraktikum.monopoly.model.BirthdayChanceCard;
 import de.unikiel.programmierpraktikum.monopoly.model.BuyableSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.ChanceCard;
@@ -22,11 +24,13 @@ import de.unikiel.programmierpraktikum.monopoly.model.StreetSpace;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
 /**
- * @author Miriam Scharnke, Johan v. Forstner Lässt die Spieler mit dem Spiel
- *         interagieren
+ * Controller class for a single {@link Player}.
+ * 
+ * @author Miriam Scharnke, Johan v. Forstner
  */
 public class PlayerController implements Serializable {
 	private static final long serialVersionUID = 8438198135183026381L;
+
 	private Player player;
 	private Game game;
 
@@ -35,16 +39,41 @@ public class PlayerController implements Serializable {
 		this.game = game;
 	}
 
+	/**
+	 * Throw the dice and move to the corresponding position.
+	 * 
+	 * @return The amount that was thrown
+	 */
 	public int throwTheDice() {
 		int count = Utilities.dice();
 		moveAmount(count);
 		return count;
 	}
 
+	/**
+	 * Move a specific amount of spaces on the game field. The player
+	 * automatically earns his salary if he passes the {@link GoSpace}.
+	 * 
+	 * @param amount
+	 *            the number of spaces to move
+	 * @return the {@link Space} the player arrived on
+	 */
 	public Space moveAmount(int amount) {
 		return moveAmount(amount, true);
 	}
 
+	/**
+	 * Move a specific amount of spaces on the game field. The player
+	 * automatically earns his salary if he passes the {@link GoSpace} only if
+	 * checkGo is set to true.
+	 * 
+	 * @param amount
+	 *            the number of spaces to move
+	 * @param checkGo
+	 *            if the player should earn his salary when he passes the
+	 *            GoSpace
+	 * @return the {@link Space} the player arrived on
+	 */
 	public Space moveAmount(int amount, boolean checkGo) {
 		int newPos = (player.getCurrentPos() + amount)
 				% game.getSpaces().size();
@@ -54,10 +83,29 @@ public class PlayerController implements Serializable {
 		return getCurrentSpace();
 	}
 
+	/**
+	 * Move to a specific position on the game field. The player automatically
+	 * earns his salary if he passes the {@link GoSpace}.
+	 * 
+	 * @param pos
+	 *            the position to move to
+	 * @return the {@link Space} the player arrived on
+	 */
 	public Space moveTo(int pos) {
 		return moveTo(pos, true);
 	}
 
+	/**
+	 * Move to a specific position on the game field. The player automatically
+	 * earns his salary if he passes the {@link GoSpace}.
+	 * 
+	 * @param pos
+	 *            the position to move to
+	 * @param checkGo
+	 *            if the player should earn his salary when he passes the
+	 *            GoSpace
+	 * @return the {@link Space} the player arrived on
+	 */
 	public Space moveTo(int pos, boolean checkGo) {
 		int newPos = pos % game.getSpaces().size();
 		if (checkGo)
@@ -72,22 +120,48 @@ public class PlayerController implements Serializable {
 		}
 	}
 
-	public void buySpace() throws LackOfMoneyException {
-		if (getCurrentSpace() instanceof BuyableSpace
-				&& ((BuyableSpace) getCurrentSpace()).getOwner() == null) {
-			BuyableSpace space = (BuyableSpace) getCurrentSpace();
-			player.pay(space.getPurchasePrice());
-			space.setOwner(player);
-			player.getProperty().add(space);
+	/**
+	 * Buy the space this player is currently on
+	 * 
+	 * @throws LackOfMoneyException
+	 *             when the player doesn't have enough money
+	 * @throws AlreadyBoughtException
+	 *             when the current space already has an owner
+	 * @throws WrongSpaceException
+	 *             when the current space isn't buyable
+	 */
+	public void buySpace() throws LackOfMoneyException, AlreadyBoughtException,
+			WrongSpaceException {
+		if (getCurrentSpace() instanceof BuyableSpace) {
+			if (((BuyableSpace) getCurrentSpace()).getOwner() == null) {
+				BuyableSpace space = (BuyableSpace) getCurrentSpace();
+				player.pay(space.getPurchasePrice());
+				space.setOwner(player);
+				player.getProperty().add(space);
+			} else {
+				throw new AlreadyBoughtException();
+			}
 		} else {
-			// TODO: Ausnahme
+			throw new WrongSpaceException();
 		}
 	}
 
+	/**
+	 * Add a House or transform four houses into a hotel on a specific space
+	 * 
+	 * @param space
+	 *            the space to add houses to
+	 * @throws LackOfMoneyException
+	 *             when the player doesn't have enough money
+	 * @throws UnableToEditHousesException
+	 *             when the space or other spaces in this category are not owned
+	 *             by the player, there is already a hotel, or the other spaces
+	 *             of this group don't have an allowed count of houses
+	 */
 	public void addHouse(StreetSpace space) throws LackOfMoneyException,
 			UnableToEditHousesException {
 		if (player.equals(space.getOwner()) && space.getHousesCount() < 5
-				&& player.isAbleToBuyHouse(space, game)) {			
+				&& player.isAbleToBuyHouse(space, game)) {
 			player.pay(space.getHousePrice());
 			space.addHouse();
 		} else {
@@ -95,6 +169,16 @@ public class PlayerController implements Serializable {
 		}
 	}
 
+	/**
+	 * Remoe a House or transform a hotel into four houses on a specific space
+	 * 
+	 * @param space
+	 *            the space to remove houses from
+	 * @throws UnableToEditHousesException
+	 *             when the space or other spaces in this category are not owned
+	 *             by the player, there is already a hotel, or the other spaces
+	 *             of this group don't have an allowed count of houses
+	 */
 	public void removeHouse(StreetSpace space)
 			throws UnableToEditHousesException {
 		if (player.equals(space.getOwner()) && space.getHousesCount() > 0
@@ -156,7 +240,8 @@ public class PlayerController implements Serializable {
 	public double payRent() throws LackOfMoneyException {
 		if (getCurrentSpace() instanceof BuyableSpace
 				&& ((BuyableSpace) getCurrentSpace()).getOwner() != null
-				&& !((BuyableSpace) getCurrentSpace()).getOwner().equals(player)) {
+				&& !((BuyableSpace) getCurrentSpace()).getOwner()
+						.equals(player)) {
 			BuyableSpace space = (BuyableSpace) getCurrentSpace();
 			player.pay(space.getRent());
 			space.getOwner().earn(space.getRent());
