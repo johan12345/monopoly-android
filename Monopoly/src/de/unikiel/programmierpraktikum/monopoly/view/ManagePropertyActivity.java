@@ -41,6 +41,7 @@ import android.widget.ToggleButton;
 public class ManagePropertyActivity extends Activity {
 	private GameController controller;
 	private List<BuyableSpace> property;
+	private TextView empty;
 	private ListView list;
 	private PropertyAdapter adapter;
 	private Status status;
@@ -63,10 +64,18 @@ public class ManagePropertyActivity extends Activity {
 			status = savegame.getStatus();
 			property = controller.getGame().getProperty(
 					controller.whoseTurnIsIt().getPlayer());
-			Collections.sort(property, new SpaceComparator());
 			list = (ListView) findViewById(R.id.list);
-			adapter = new PropertyAdapter(this);
-			list.setAdapter(adapter);
+			empty = (TextView) findViewById(R.id.txtEmpty);
+			if (property.size() > 0) {
+				Collections.sort(property, new SpaceComparator());
+				adapter = new PropertyAdapter(this);
+				list.setAdapter(adapter);
+				empty.setVisibility(View.GONE);
+				list.setVisibility(View.VISIBLE);
+			} else  {
+				empty.setVisibility(View.VISIBLE);
+				list.setVisibility(View.GONE);
+			}
 		} else {
 			finish();
 		}

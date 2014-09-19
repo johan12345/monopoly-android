@@ -49,6 +49,7 @@ public class SetupGameActivity extends Activity {
 	private Button btnAdd;
 	private PlayerAdapter adapter;
 	private ListView list;
+	private TextView empty;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class SetupGameActivity extends Activity {
 		setContentView(R.layout.activity_setup_game);
 		btnAdd = (Button) findViewById(R.id.btnAdd);
 		list = (ListView) findViewById(R.id.list);
+		empty = (TextView) findViewById(R.id.txtEmpty);
 
 		players = new ArrayList<Player>();
 		adapter = new PlayerAdapter(this);
@@ -65,10 +67,14 @@ public class SetupGameActivity extends Activity {
 		for (Peg peg : Peg.values()) {
 			availablePegs.put(peg, true);
 		}
+		empty.setVisibility(View.VISIBLE);
+		list.setVisibility(View.GONE);
 		btnAdd.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+				empty.setVisibility(View.GONE);
+				list.setVisibility(View.VISIBLE);
 				final Map<String, Peg> pegs = new HashMap<String, Peg>();
 				for (Entry<Peg, Boolean> entry : availablePegs.entrySet()) {
 					if (entry.getValue()) {

@@ -81,6 +81,44 @@ public class GameActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		setupViews();
 
+		SaveGame savegame = null;
+		try {
+			savegame = new SaveGameHandler().loadGame(this, "test.game");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (savegame != null) {
+			// Spiel existiert bereits
+			new AlertDialog.Builder(this)
+					.setTitle("Monopoly")
+					.setMessage(
+							"Möchten Sie mit dem letzten Spiel fortfahren oder ein neues Spiel beginnen?")
+					.setCancelable(false)
+					.setPositiveButton("Fortfahren",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// Do nothing, game will be loaded in onResume
+								}
+
+							})
+					.setNegativeButton("Neues Spiel",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Intent intent = new Intent(
+											GameActivity.this,
+											SetupGameActivity.class);
+									startActivity(intent);
+								}
+
+							}).create().show();
+		}
+
 		viewCreator = new ViewCreator(this);
 
 		btnThrowDice.setOnClickListener(new OnClickListener() {
@@ -400,7 +438,8 @@ public class GameActivity extends Activity {
 										}
 										Space space = player.getCurrentSpace();
 										if (space instanceof BuyableSpace
-												&& ((BuyableSpace) space).getOwner() == null)
+												&& ((BuyableSpace) space)
+														.getOwner() == null)
 											setStatus(Status.DICE_THROWN_ON_BUYABLE);
 										else
 											setStatus(Status.DICE_THROWN);
