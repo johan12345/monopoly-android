@@ -52,6 +52,11 @@ import de.unikiel.programmierpraktikum.monopoly.model.Player;
 import de.unikiel.programmierpraktikum.monopoly.model.Space;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
+/**
+ * Main Activity for the Monopoly game
+ * 
+ * @author Johan v. Forstner, Miriam Scharnke
+ */
 public class GameActivity extends Activity {
 	private Game game;
 	private GameController controller;
@@ -71,17 +76,39 @@ public class GameActivity extends Activity {
 	private ImageView imgPlayerBg;
 	private FrameLayout players;
 
+	/**
+	 * Defines possible statuses of the {@link GameActivity}. Used for showing
+	 * the appropriate action buttons on the bottom.
+	 * 
+	 * @author Johan v. Forstner, Miriam Scharnke
+	 */
 	public enum Status {
 		DICE_NOT_THROWN, DICE_THROWN, DICE_THROWN_ON_BUYABLE, JAIL_THROW_DICE, JAIL_DO_NOT_THROW_DICE, LACK_OF_MONEY
 	}
 
 	private static final int SPACE_WIDTH = 225;
 
+	/**
+	 * Called when the Activity is first created. Shows a dialog if the user
+	 * wants to start a new game or continue an existing one and sets up
+	 * {@link OnClickListener}s for the action buttons.
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setupViews();
+		fieldScroller.getViewTreeObserver().addOnScrollChangedListener(
+				new OnScrollChangedListener() {
+					@Override
+					public void onScrollChanged() {
+						int scroll = fieldScroller.getScrollX();
+						fieldProgress.setProgress(scroll
+								% fieldProgress.getMax());
+					}
+				});
 
 		SaveGame savegame = null;
 		try {
@@ -103,7 +130,8 @@ public class GameActivity extends Activity {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// Do nothing, game will be loaded in onResume
+									// Do nothing, game will be loaded in
+									// onResume
 								}
 
 							})
@@ -234,7 +262,7 @@ public class GameActivity extends Activity {
 					setStatus(Status.JAIL_THROW_DICE);
 				else
 					setStatus(Status.DICE_NOT_THROWN);
-				scrollToField(controller.whoseTurnIsIt().getPlayer()
+				scrollToSpace(controller.whoseTurnIsIt().getPlayer()
 						.getCurrentPos(), false);
 				refresh();
 			}
@@ -274,6 +302,13 @@ public class GameActivity extends Activity {
 
 	}
 
+	/**
+	 * Sets the current {@link Status} of the game and updates the visibility of
+	 * the action buttons appropriately.
+	 * 
+	 * @param status
+	 *            the status to set
+	 */
 	private void setStatus(Status status) {
 		this.status = status;
 		switch (status) {
@@ -315,6 +350,10 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Refresh the Text and Image views in the bottom right corner to reflect
+	 * the current player and his current balance
+	 */
 	private void refreshTextFields() {
 		Player player = controller.whoseTurnIsIt().getPlayer();
 		playerName.setText(player.getName());
@@ -327,16 +366,38 @@ public class GameActivity extends Activity {
 				.getIndex()));
 	}
 
+	/**
+	 * Animate a player view to the current position. Animates always to the
+	 * right side by default and executes the action required on the new field.
+	 * 
+	 * @see animatePlayerToPosition(PlayerController, boolean, boolean)
+	 * @param player
+	 *            the PlayerController whose view should be animated
+	 */
 	private void animatePlayerToPosition(PlayerController player) {
 		animatePlayerToPosition(player, true, true);
 	}
 
+	/**
+	 * Animate a player view to the current position. If alwaysRight is set to
+	 * true, the animation will go always to the right and in case the
+	 * destination is in the other direction, fake views will be added to the
+	 * field to simulate a continuous scroll to the right, and removed after the
+	 * animation.
+	 * 
+	 * @param player
+	 *            the PlayerController whose view should be animated
+	 * @param executeAction
+	 *            whether to execute the action required on the new field
+	 * @param alwaysRight
+	 *            whether to move always to the right
+	 */
 	private void animatePlayerToPosition(final PlayerController player,
 			final boolean executeAction, final boolean alwaysRight) {
 		final View view = getPlayerView(player.getPlayer().getIndex());
 		final float x = Utilities.dpToPx((int) (SPACE_WIDTH * (player
 				.getPlayer().getCurrentPos() + 0.5)), GameActivity.this)
-				+ calculateFieldRelativePositionX(player.getPlayer());
+				+ calculateSpaceRelativePositionX(player.getPlayer());
 		float y = calculatePositionY(player.getPlayer());
 		view.setY(y);
 		if (x > view.getX() || !alwaysRight) {
@@ -368,9 +429,18 @@ public class GameActivity extends Activity {
 		}
 
 		if (!(x == view.getX()))
-			scrollToField(player.getPlayer().getCurrentPos(), alwaysRight);
+			scrollToSpace(player.getPlayer().getCurrentPos(), alwaysRight);
 	}
 
+	/**
+	 * Animate a player's view to the top or bottom, depending on whether he is
+	 * imprisoned or visitor.
+	 * 
+	 * @param player
+	 *            the PlayerController whose view will be animated
+	 * @param inJail
+	 *            whether the player is imprisoned or not
+	 */
 	private void animatePlayerToJail(PlayerController player, boolean inJail) {
 		float y = spaces.getHeight()
 				* (inJail ? 1f / 6 : 2f / 3)
@@ -382,6 +452,13 @@ public class GameActivity extends Activity {
 		animator.start();
 	}
 
+	/**
+	 * Execute the action corresponding to a field the given player has landed
+	 * on
+	 * 
+	 * @param player
+	 *            the PlayerController to use
+	 */
 	private void doFieldAction(final PlayerController player) {
 		Space space = player.getCurrentSpace();
 		if (space instanceof BuyableSpace) {
@@ -469,6 +546,16 @@ public class GameActivity extends Activity {
 		refresh();
 	}
 
+	/**
+	 * Handles a {@link LackOfMoneyException} by showing a message to the player
+	 * and not letting the player go until he has paid, or showing a dialog that
+	 * the player is bankrupt and lost the game.
+	 * 
+	 * @param e
+	 *            the LackOfMoneyException to handle
+	 * @param player
+	 *            the corresponding PlayerController
+	 */
 	private void handleLackOfMoney(LackOfMoneyException e,
 			PlayerController player) {
 		double amount = e.getMoneyToPay();
@@ -486,8 +573,15 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Make a player lose the game and, if there is only one player remaining,
+	 * end the game.
+	 * 
+	 * @param player
+	 */
 	private void lose(PlayerController player) {
 		Player lastPlayer = player.lose();
+		refresh();
 		if (lastPlayer != null) {
 			Intent intent = new Intent(this, GameEndedActivity.class);
 			intent.putExtra("playerName", lastPlayer.getName());
@@ -495,6 +589,12 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Show a dialog that a player has lost
+	 * 
+	 * @param player
+	 *            the PlayerController whose player has lost
+	 */
 	private void showBankruptDialog(final PlayerController player) {
 		new AlertDialog.Builder(this)
 				.setMessage(
@@ -514,12 +614,27 @@ public class GameActivity extends Activity {
 				}).create().show();
 	}
 
+	/**
+	 * Shorthand method for {@link refreshTextFields()} and {@link
+	 * refreshSpaces()}.
+	 */
 	private void refresh() {
 		refreshTextFields();
 		refreshSpaces();
 	}
 
-	private void scrollToField(int pos, boolean alwaysRight) {
+	/**
+	 * Scroll to a space on the game field. If alwaysRight is set to true, the
+	 * animation will go always to the right and in case the destination is in
+	 * the other direction, fake views will be added to the field to simulate a
+	 * continuous scroll to the right, and removed after the animation.
+	 * 
+	 * @param pos
+	 *            the number of the space to scroll to
+	 * @param alwaysRight
+	 *            whether to always scroll to the right
+	 */
+	private void scrollToSpace(int pos, boolean alwaysRight) {
 		int halfWidth = fieldScroller.getWidth() / 2;
 		int calculatedScrollPos = Utilities.dpToPx(
 				(int) (SPACE_WIDTH * (pos + 0.5)), this) - halfWidth;
@@ -565,6 +680,17 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Utility function for {@link scrollToSpace}. Animates a scroll of the game
+	 * field to a specific position
+	 * 
+	 * @param pos
+	 *            Position in pixels
+	 * @param duration
+	 *            duration of the scroll
+	 * @param listener
+	 *            {@link AnimatorListener} to add to the animation (optional)
+	 */
 	private void animateFieldScroll(int pos, int duration,
 			AnimatorListener listener) {
 		ObjectAnimator animator = ObjectAnimator.ofInt(fieldScroller,
@@ -575,6 +701,9 @@ public class GameActivity extends Activity {
 		animator.start();
 	}
 
+	/**
+	 * Sets up views for all the players
+	 */
 	private void buildPlayers() {
 		LayoutInflater inflater = getLayoutInflater();
 		int i = 0;
@@ -589,37 +718,46 @@ public class GameActivity extends Activity {
 			view.setTag(i);
 			view.setX(Utilities.dpToPx(
 					(int) (SPACE_WIDTH * (player.getCurrentPos() + 0.5)), this)
-					+ calculateFieldRelativePositionX(player));
+					+ calculateSpaceRelativePositionX(player));
 			view.setY(calculatePositionY(player));
 			players.addView(view);
-
-			// final ProgressBar bar = (ProgressBar) inflater.inflate(
-			// R.layout.progress_bar, progressBars).findViewById(R.id.progress);
-			// view.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-			//
-			// @Override
-			// public void onLayoutChange(View v, int left, int top,
-			// int right, int bottom, int oldLeft, int oldTop,
-			// int oldRight, int oldBottom) {
-			// bar.setMax(players.getWidth());
-			// bar.setProgress(left);
-			// }
-			//
-			// });
 
 			i++;
 		}
 	}
 
-	private int calculateFieldRelativePositionX(Player player) {
+	/**
+	 * Utility function for all functions related to moving the player views.
+	 * Calculates the X position of a player relative to the center of his
+	 * current space, so that the players don't all sit on the same spot.
+	 * 
+	 * @param player
+	 *            the player to calculate the position for
+	 * @return X position relative to the center of the current space, in pixels
+	 */
+	private int calculateSpaceRelativePositionX(Player player) {
 		return Utilities.dpToPx((player.getIndex() % 2 == 0 ? 1 : -1) * 26,
 				this);
 	}
 
+	/**
+	 * Utility function for all functions related to moving the player views.
+	 * Calculates the Y position of a player, so that the players don't all sit
+	 * on the same spot.
+	 * 
+	 * @param player
+	 *            the player to calculate the position for
+	 * @return Y position in pixels
+	 */
 	private int calculatePositionY(Player player) {
 		return Utilities.dpToPx(96 + 32 * (player.getIndex() / 2), this);
 	}
 
+	/**
+	 * @param number
+	 *            the index of a player
+	 * @return the View corresponding to this player on the field
+	 */
 	private View getPlayerView(int number) {
 		FrameLayout players = (FrameLayout) findViewById(R.id.players);
 		for (int i = 0; i < players.getChildCount(); i++) {
@@ -631,19 +769,14 @@ public class GameActivity extends Activity {
 		return null;
 	}
 
+	/**
+	 * Get references to all the important views and save them in the
+	 * corresponding variables
+	 */
 	private void setupViews() {
 		spaces = (LinearLayout) findViewById(R.id.spaces);
 		fieldScroller = (HorizontalScrollView) findViewById(R.id.scroll);
 		fieldProgress = (ProgressBar) findViewById(R.id.scrollDisplay);
-		fieldScroller.getViewTreeObserver().addOnScrollChangedListener(
-				new OnScrollChangedListener() {
-					@Override
-					public void onScrollChanged() {
-						int scroll = fieldScroller.getScrollX();
-						fieldProgress.setProgress(scroll
-								% fieldProgress.getMax());
-					}
-				});
 		playerName = (TextView) findViewById(R.id.txtPlayerName);
 		money = (TextView) findViewById(R.id.txtMoney);
 		btnThrowDice = (Button) findViewById(R.id.btnThrowDice);
@@ -656,6 +789,9 @@ public class GameActivity extends Activity {
 		players = (FrameLayout) findViewById(R.id.players);
 	}
 
+	/**
+	 * Build Views for all the spaces on the game field
+	 */
 	private void buildField() {
 		for (Space space : game.getSpaces()) {
 			View spaceView = viewCreator.createSpaceView(space, spaces);
@@ -664,6 +800,10 @@ public class GameActivity extends Activity {
 		refreshFieldsWidth();
 	}
 
+	/**
+	 * Refreshes the spaces on the game field (for example, when the owner of a
+	 * field has changed)
+	 */
 	private void refreshSpaces() {
 		for (int i = 0; i < game.getSpaces().size(); i++) {
 			View spaceView = spaces.getChildAt(i);
@@ -671,6 +811,10 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Wait for a layout change to occur and then refresh the maximum value of
+	 * the progress bar on the top
+	 */
 	private void refreshFieldsWidth() {
 		spaces.getViewTreeObserver().addOnGlobalLayoutListener(
 				new OnGlobalLayoutListener() {
@@ -683,6 +827,13 @@ public class GameActivity extends Activity {
 				});
 	}
 
+	/**
+	 * Called every time the app is started or the main game Activity is brought
+	 * to the front again. Loads the game and refreshes all the views. Also
+	 * starts the {@link SetupGameActivity} if no game is currently saved.
+	 * 
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -709,18 +860,26 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Remove all player and space views from their respective containers
+	 */
 	private void clearFieldAndPlayers() {
 		spaces.removeAllViews();
 		players.removeAllViews();
 	}
 
+	/**
+	 * Called when the GameActivity is hidden. Automatically saves the game.
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	public void onPause() {
 		super.onPause();
 		if (controller != null && game != null)
 			try {
-				SaveGameHandler.saveGame(this, new SaveGame(controller,
-						status), "test.game");
+				SaveGameHandler.saveGame(this,
+						new SaveGame(controller, status), "test.game");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
