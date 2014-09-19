@@ -4,15 +4,15 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * @author johan_000
- *
+ * One sort of (@Link ChanceCard); where a player will be sent to a different, definitive location.
+ * @author Johan v. Forstner, Miriam Scharnke
  */
 public class MoveToChanceCard extends ChanceCard {
 	private static final long serialVersionUID = 2600106692955387546L;
 	private int spacePos;
 
 	/**
-	 * @return the spacePos
+	 * @return the destination
 	 */
 	public int getSpacePos() {
 		return spacePos;

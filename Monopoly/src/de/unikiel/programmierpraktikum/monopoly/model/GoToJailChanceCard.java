@@ -4,8 +4,8 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * @author johan_000
- *
+ * One sort of (@Link ChanceCard); player will be sent to jail.
+ * @author Johan v. Forstner, Miriam Scharnke
  */
 public class GoToJailChanceCard extends ChanceCard {
 

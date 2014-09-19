@@ -4,8 +4,8 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
- * @author johan_000
- *
+  * One sort of (@Link ChanceCard); where a player will have to pay a certain amount of money for each of his houses and another for his hotels.
+ * Johan v. Forstner, Miriam Scharnke
  */
 public class PayRenovationChanceCard extends ChanceCard {
 	private static final long serialVersionUID = 2018485354000414262L;
@@ -13,7 +13,7 @@ public class PayRenovationChanceCard extends ChanceCard {
 	private double hotelAmount;
 	
 	/**
-	 * @return the houseAmount
+	 * @return the price to pay for each house
 	 */
 	public double getHouseAmount() {
 		return houseAmount;
@@ -25,7 +25,7 @@ public class PayRenovationChanceCard extends ChanceCard {
 		this.houseAmount = houseAmount;
 	}
 	/**
-	 * @return the hotelAmount
+	 * @return the price to pay for each hotel
 	 */
 	public double getHotelAmount() {
 		return hotelAmount;

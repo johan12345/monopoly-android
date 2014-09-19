@@ -5,7 +5,7 @@ package de.unikiel.programmierpraktikum.monopoly.model;
 
 /**
  * @author Miriam Scharnke, Johan v. Forstner
- * Speichert die Eigenschaften des "Gefängnis"-Feldes auf dem Spielfeld
+ * Saves the characteristics of the jail space, where a player can be imprisoned as well as visiting.
  */
 public class JailSpace extends Space {
 
