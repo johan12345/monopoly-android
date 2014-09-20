@@ -38,6 +38,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+/**
+ * Activity for managing your own property. Shows a list of all bought spaces
+ * and allows to add/remove houses and hotels and create mortgages.
+ * 
+ * @author Johan v. Forstner, Miriam Scharnke
+ */
 public class ManagePropertyActivity extends Activity {
 	private GameController controller;
 	private List<BuyableSpace> property;
@@ -46,6 +52,12 @@ public class ManagePropertyActivity extends Activity {
 	private PropertyAdapter adapter;
 	private Status status;
 
+	/**
+	 * Called when the activity is started. Loads the current game and sets up
+	 * the list of spaces.
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,7 +84,7 @@ public class ManagePropertyActivity extends Activity {
 				list.setAdapter(adapter);
 				empty.setVisibility(View.GONE);
 				list.setVisibility(View.VISIBLE);
-			} else  {
+			} else {
 				empty.setVisibility(View.VISIBLE);
 				list.setVisibility(View.GONE);
 			}
@@ -80,17 +92,30 @@ public class ManagePropertyActivity extends Activity {
 			finish();
 		}
 	}
-	
+
+	/**
+	 * Called when the activity is hidden. Saves the game.
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	public void onPause() {
 		super.onPause();
 		try {
-			SaveGameHandler.saveGame(this, new SaveGame(controller, status), "test.game");
+			SaveGameHandler.saveGame(this, new SaveGame(controller, status),
+					"test.game");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * {@link android.widget.Adapter} class to create and recycle views for all
+	 * the bought spaces in the list. Accesses the property List from the
+	 * Activity.
+	 * 
+	 * @author Johan v. Forstner, Miriam Scharnke
+	 */
 	private class PropertyAdapter extends ArrayAdapter<BuyableSpace> {
 
 		private LayoutInflater inflater;
@@ -137,7 +162,7 @@ public class ManagePropertyActivity extends Activity {
 			TextView rent = (TextView) view.findViewById(R.id.txtRent);
 			TextView housePrice = (TextView) view
 					.findViewById(R.id.txtHousePrice);
-			
+
 			plus.setOnClickListener(null);
 			minus.setOnClickListener(null);
 			mortgage.setOnCheckedChangeListener(null);
@@ -157,8 +182,10 @@ public class ManagePropertyActivity extends Activity {
 			house3.setVisibility(houseVisibility(space, 3));
 			house4.setVisibility(houseVisibility(space, 4));
 			hotel.setVisibility(hotelVisibility(space));
-			plus.setVisibility(Utilities.visibility(space instanceof StreetSpace));
-			minus.setVisibility(Utilities.visibility(space instanceof StreetSpace));
+			plus.setVisibility(Utilities
+					.visibility(space instanceof StreetSpace));
+			minus.setVisibility(Utilities
+					.visibility(space instanceof StreetSpace));
 			mortgage.setChecked(space.isMortgage());
 			rent.setText("Miete: " + format.format(space.getRent()));
 			if (space instanceof StreetSpace) {
@@ -229,7 +256,8 @@ public class ManagePropertyActivity extends Activity {
 
 		private int houseVisibility(BuyableSpace space, int num) {
 			if (space instanceof StreetSpace) {
-				return Utilities.visibility(((StreetSpace) space).getRealHousesCount() >= num);
+				return Utilities.visibility(((StreetSpace) space)
+						.getRealHousesCount() >= num);
 			} else {
 				return View.INVISIBLE;
 			}
@@ -237,21 +265,31 @@ public class ManagePropertyActivity extends Activity {
 
 		private int hotelVisibility(BuyableSpace space) {
 			if (space instanceof StreetSpace) {
-				return Utilities.visibility(((StreetSpace) space).getHotelCount() == 1);
+				return Utilities.visibility(((StreetSpace) space)
+						.getHotelCount() == 1);
 			} else {
 				return View.INVISIBLE;
 			}
 		}
 
 	}
-	
+
+	/**
+	 * Simple {@link Comparator} class to sort the list of spaces by category.
+	 * Uses the {@link Category#ordinal()} function for {@link StreetSpace}s and
+	 * negative values for the other {@link BuyableSpace}s and then sorts by
+	 * these numbers.
+	 * 
+	 * @author Johan v. Forstner, Miriam Scharnke
+	 *
+	 */
 	private class SpaceComparator implements Comparator<Space> {
 
 		@Override
 		public int compare(Space a, Space b) {
 			return catNumber(a).compareTo(catNumber(b));
 		}
-		
+
 		private Integer catNumber(Space space) {
 			if (space instanceof StreetSpace)
 				return ((StreetSpace) space).getCategory().ordinal();
@@ -262,6 +300,6 @@ public class ManagePropertyActivity extends Activity {
 			else
 				return -3;
 		}
-		
+
 	}
 }

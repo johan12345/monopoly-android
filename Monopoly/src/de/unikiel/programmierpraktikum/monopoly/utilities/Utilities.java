@@ -244,4 +244,30 @@ public class Utilities {
 	public static int visibility(boolean visible) {
 		return visible ? View.VISIBLE : View.INVISIBLE;
 	}
+
+	/**
+	 * Converts a given string into title case
+	 * ("Capital Letter At The Start Of Each Word").
+	 * 
+	 * @param input
+	 *            a String in any case
+	 * @return the same String, converted to title case
+	 */
+	public static String toTitleCase(String input) {
+		StringBuilder titleCase = new StringBuilder();
+		boolean nextTitleCase = true;
+		for (char c : input.toCharArray()) {
+			if (Character.isSpaceChar(c)) {
+				nextTitleCase = true;
+			} else if (nextTitleCase) {
+				c = Character.toUpperCase(c);
+				nextTitleCase = false;
+			} else {
+				c = Character.toLowerCase(c);
+			}
+
+			titleCase.append(c);
+		}
+		return titleCase.toString();
+	}
 }

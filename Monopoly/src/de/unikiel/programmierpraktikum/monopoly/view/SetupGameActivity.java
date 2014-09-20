@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.unikiel.programmierpraktikum.monopoly.view;
 
 import java.io.IOException;
@@ -40,7 +37,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * @author johan_000
+ * Activity to setup the game. Allows the user to add players and configure
+ * their name and peg.
+ * 
+ * @author Johan v. Forstner, Miriam Scharnke
  *
  */
 public class SetupGameActivity extends Activity {
@@ -51,6 +51,12 @@ public class SetupGameActivity extends Activity {
 	private ListView list;
 	private TextView empty;
 
+	/**
+	 * Called when the Activity is started. Sets up the list of players and
+	 * assigns an {@link OnClickListener} to the "add" button.
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,7 +85,7 @@ public class SetupGameActivity extends Activity {
 				for (Entry<Peg, Boolean> entry : availablePegs.entrySet()) {
 					if (entry.getValue()) {
 						String name = entry.getKey().toString();
-						name = toTitleCase(name.replace("_", " "));
+						name = Utilities.toTitleCase(name.replace("_", " "));
 						pegs.put(name, entry.getKey());
 					}
 				}
@@ -128,6 +134,12 @@ public class SetupGameActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Called when the Activity is started and creates a menu containing the
+	 * "start game" button
+	 * 
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -135,11 +147,19 @@ public class SetupGameActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Called when a menu item (in this case, only the "start game" button) is
+	 * selected. Will create a new game, save it and close this Activity to go
+	 * back to the {@link GameActivity}.
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.startGame) {
 			if (players.size() < 2) {
-				Toast.makeText(this, "Zu wenig Spieler!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Zu wenig Spieler!", Toast.LENGTH_SHORT)
+						.show();
 			} else {
 				try {
 					String field = Utilities.readStream(getAssets().open(
@@ -154,8 +174,8 @@ public class SetupGameActivity extends Activity {
 					GameController controller = new GameController(game);
 					controller.giveStartMoney();
 
-					new SaveGameHandler().saveGame(this, new SaveGame(
-							controller, Status.DICE_NOT_THROWN), "test.game");
+					SaveGameHandler.saveGame(this, new SaveGame(controller,
+							Status.DICE_NOT_THROWN), "test.game");
 					finish();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -165,24 +185,12 @@ public class SetupGameActivity extends Activity {
 		return true;
 	}
 
-	private String toTitleCase(String input) {
-		StringBuilder titleCase = new StringBuilder();
-		boolean nextTitleCase = true;
-		for (char c : input.toCharArray()) {
-			if (Character.isSpaceChar(c)) {
-				nextTitleCase = true;
-			} else if (nextTitleCase) {
-				c = Character.toUpperCase(c);
-				nextTitleCase = false;
-			} else {
-				c = Character.toLowerCase(c);
-			}
-
-			titleCase.append(c);
-		}
-		return titleCase.toString();
-	}
-
+	/**
+	 * {@link android.widget.Adapter} class to create and recycle views for all
+	 * the players in the list. Accesses the players List from the Activity.
+	 * 
+	 * @author Johan v. Forstner, Miriam Scharnke
+	 */
 	private class PlayerAdapter extends ArrayAdapter<Player> {
 
 		private LayoutInflater inflater;
