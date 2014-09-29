@@ -13,6 +13,7 @@ import de.unikiel.programmierpraktikum.monopoly.controller.SaveGameHandler.SaveG
 import de.unikiel.programmierpraktikum.monopoly.exceptions.LackOfMoneyException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToEditHousesException;
 import de.unikiel.programmierpraktikum.monopoly.exceptions.UnableToRaiseMortgageException;
+import de.unikiel.programmierpraktikum.monopoly.exceptions.WrongSpaceException;
 import de.unikiel.programmierpraktikum.monopoly.model.BuyableSpace;
 import de.unikiel.programmierpraktikum.monopoly.model.Space;
 import de.unikiel.programmierpraktikum.monopoly.model.StationSpace;
@@ -244,6 +245,8 @@ public class ManagePropertyActivity extends Activity {
 						Toast.makeText(ManagePropertyActivity.this,
 								"Nicht genug Geld!", Toast.LENGTH_SHORT).show();
 					} catch (UnableToRaiseMortgageException e) {
+						// Should not happen
+					} catch (WrongSpaceException e) {
 						// Should not happen
 					}
 					notifyDataSetChanged();

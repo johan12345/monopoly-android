@@ -143,8 +143,8 @@ public class PlayerController implements Serializable {
 	 *             when the player doesn't have enough money
 	 * @throws UnableToEditHousesException
 	 *             when the space or other spaces in this category are not owned
-	 *             by the player, there is already a hotel, or the other spaces
-	 *             of this group don't have an allowed count of houses
+	 *             by the player, there is already a hotel, or the houses on
+	 *             this category aren't equally distributed
 	 */
 	public void addHouse(StreetSpace space) throws LackOfMoneyException,
 			UnableToEditHousesException {
@@ -189,20 +189,26 @@ public class PlayerController implements Serializable {
 	 * @throws LackOfMoneyException
 	 *             If you don't have enough money to cancel the mortgage
 	 * @throws UnableToRaiseMortgageException
-	 *             If you don't own the space or the mortgage parameter already
-	 *             matches the current state
+	 *             the mortgage parameter already matches the current state
+	 * @throws WrongSpaceException
+	 *             If you don't own the space
 	 */
 	public void setMortgage(boolean mortgage, BuyableSpace space)
-			throws LackOfMoneyException, UnableToRaiseMortgageException {
-		if (space.isMortgage() != mortgage && player.equals(space.getOwner())) {
-			if (mortgage) {
-				player.earn(space.getMortgageValue());
+			throws LackOfMoneyException, UnableToRaiseMortgageException,
+			WrongSpaceException {
+		if (player.equals(space.getOwner())) {
+			if (space.isMortgage() != mortgage) {
+				if (mortgage) {
+					player.earn(space.getMortgageValue());
+				} else {
+					player.pay(space.getMortgageValue());
+				}
+				space.setMortgage(mortgage);
 			} else {
-				player.pay(space.getMortgageValue());
+				throw new UnableToRaiseMortgageException();
 			}
-			space.setMortgage(mortgage);
 		} else {
-			throw new UnableToRaiseMortgageException();
+			throw new WrongSpaceException();
 		}
 	}
 
@@ -360,7 +366,7 @@ public class PlayerController implements Serializable {
 	 */
 	public Player lose() {
 		player.setHasLost();
-		for (BuyableSpace space:game.getProperty(player)) {
+		for (BuyableSpace space : game.getProperty(player)) {
 			space.setOwner(null);
 			space.setMortgage(false);
 		}
