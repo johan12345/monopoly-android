@@ -16,7 +16,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
- * Enthält nützliche static-Methoden, die für das Spiel nötig sind
+ * Contains useful methods that are important for the game.
  * 
  * @author Miriam Scharnke, Johan v. Forstner
  * 
