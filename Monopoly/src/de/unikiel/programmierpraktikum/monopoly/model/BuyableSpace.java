@@ -32,7 +32,7 @@ public abstract class BuyableSpace extends Space {
 	}
 
 	/**
-	 * @return the owner
+	 * @return the owner of this space
 	 */
 	public Player getOwner() {
 		return owner;

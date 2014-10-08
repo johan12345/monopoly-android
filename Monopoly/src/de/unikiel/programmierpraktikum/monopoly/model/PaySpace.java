@@ -11,7 +11,7 @@ public class PaySpace extends Space {
 	private double amount;
 
 	/**
-	 * @return the amount
+	 * @return the amount the player needs to pay
 	 */
 	public double getAmount() {
 		return amount;

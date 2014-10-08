@@ -20,7 +20,7 @@ public class PayChanceCard extends ChanceCard {
 
 	/**
 	 * @param amount
-	 *            that amount to set
+	 *            the amount to set
 	 */
 	public void setAmount(double amount) {
 		this.amount = amount;
