@@ -25,7 +25,9 @@ import de.unikiel.programmierpraktikum.monopoly.model.UtilitySpace;
 import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
 
 /**
- * @author johan_000 Generiert Views aus Spielobjekten
+ * Generiert Views aus Spielobjekten
+ * 
+ * @author Miriam Scharnke, Johan v. Forstner
  */
 public class ViewCreator {
 	private LayoutInflater inflater;
@@ -36,12 +38,13 @@ public class ViewCreator {
 
 	/**
 	 * Refresh all the texts and images shown on a {@link View} returned by
-	 * {@link createSpaceView}
+	 * {@link #createSpaceView(Space, ViewGroup)}
 	 * 
 	 * @param space
 	 *            the {@link Space} to use for all the values
 	 * @param spaceView
-	 *            a view originally returned by {@link createSpaceView}
+	 *            a view originally returned by
+	 *            {@link #createSpaceView(Space, ViewGroup)}
 	 */
 	public void refreshSpaceView(Space space, View spaceView) {
 		DecimalFormat format = Utilities.moneyFormat();

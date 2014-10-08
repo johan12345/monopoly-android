@@ -76,8 +76,8 @@ public class StreetSpace extends BuyableSpace {
 	}
 
 	/**
-	 * Assign a base rent to this field. {@link getPurchasePrice()},
-	 * {@link getRent} and {@link getHousePrice} use this to automatically
+	 * Assign a base rent to this field. {@link #getPurchasePrice()},
+	 * {@link #getRent()} and {@link #getHousePrice()} use this to automatically
 	 * calculate suitable values.
 	 * 
 	 * @param baseRent

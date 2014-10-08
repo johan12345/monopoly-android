@@ -370,7 +370,7 @@ public class GameActivity extends Activity {
 	 * Animate a player view to the current position. Animates always to the
 	 * right side by default and executes the action required on the new field.
 	 * 
-	 * @see animatePlayerToPosition(PlayerController, boolean, boolean)
+	 * @see #animatePlayerToPosition(PlayerController, boolean, boolean)
 	 * @param player
 	 *            the PlayerController whose view should be animated
 	 */
