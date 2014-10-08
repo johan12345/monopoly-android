@@ -9,7 +9,7 @@ package de.unikiel.programmierpraktikum.monopoly.exceptions;
  */
 @SuppressWarnings("serial")
 public class LackOfMoneyException extends Exception {
-	double moneyToPay;
+	private double moneyToPay;
 
 	public LackOfMoneyException(double moneyToPay) {
 		this.moneyToPay = moneyToPay;

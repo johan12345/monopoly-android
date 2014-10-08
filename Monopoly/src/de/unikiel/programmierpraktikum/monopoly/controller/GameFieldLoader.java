@@ -109,7 +109,7 @@ public class GameFieldLoader {
 					street.setBaseRent(spaceJson.getDouble("base_rent"));
 					street.setName(spaceJson.getString("name"));
 					String category = spaceJson.getString("category");
-					street.setCategory(Category.fromString(category));
+					street.setCategory(Category.valueOf(category.toUpperCase()));
 					space = street;
 				} else if (type.equals("pay")) {
 					PaySpace pay = new PaySpace();

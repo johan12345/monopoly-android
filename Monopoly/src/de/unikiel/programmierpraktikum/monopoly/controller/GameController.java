@@ -41,7 +41,7 @@ public class GameController implements Serializable {
 	/**
 	 * @return the current player's index
 	 */
-	public int getCurrentPlayerNumber() {
+	public int getCurrentPlayerIndex() {
 		return currentPlayerNumber;
 	}
 

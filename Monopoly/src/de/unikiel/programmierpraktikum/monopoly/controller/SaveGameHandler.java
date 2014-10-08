@@ -33,10 +33,16 @@ public class SaveGameHandler {
 			this.status = status;
 		}
 
+		/**
+		 * @return the controller
+		 */
 		public GameController getController() {
 			return controller;
 		}
 
+		/**
+		 * @return the status
+		 */
 		public Status getStatus() {
 			return status;
 		}

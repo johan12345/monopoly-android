@@ -2,7 +2,8 @@ package de.unikiel.programmierpraktikum.monopoly.exceptions;
 
 /**
  * Thrown when the mortgage status given to
- * {@link PlayerController#setMortgage()} already matches the current state.
+ * {@link de.unikiel.programmierpraktikum.monopoly.controller.PlayerController#setMortgage(boolean, BuyableSpace)}
+ * already matches the current state.
  * 
  * @author Miriam Scharnke, Johan v. Forstner
  *

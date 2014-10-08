@@ -1,5 +1,7 @@
 package de.unikiel.programmierpraktikum.monopoly.model;
 
+import de.unikiel.programmierpraktikum.monopoly.utilities.Utilities;
+
 /**
  * Represents a street {@link Space}
  * 
@@ -10,17 +12,6 @@ public class StreetSpace extends BuyableSpace {
 
 	public enum Category {
 		BROWN, LIGHT_BLUE, PINK, ORANGE, RED, YELLOW, GREEN, DARK_BLUE;
-		public static Category fromString(String name) {
-			if(name.equals("brown")) return BROWN;
-			else if (name.equals("light_blue")) return LIGHT_BLUE;
-			else if (name.equals("pink")) return PINK;
-			else if (name.equals("orange")) return ORANGE;
-			else if (name.equals("red")) return RED;
-			else if (name.equals("yellow")) return YELLOW;
-			else if (name.equals("green")) return GREEN;
-			else if (name.equals("dark_blue")) return DARK_BLUE;
-			else return null;
-		}
 	}
 	private Category category;
 	private double baseRent;
@@ -46,11 +37,11 @@ public class StreetSpace extends BuyableSpace {
 		} else {
 			switch (housesCount) {
 				case 0: return baseRent;
-				case 1: return round(100, baseRent * 5);
-				case 2: return round(100, baseRent * 15);
-				case 3: return round(1000, baseRent * 35);
-				case 4: return round(1000, baseRent * 42);
-				case 5: return round(1000, baseRent * 50);
+				case 1: return Utilities.round(100, baseRent * 5);
+				case 2: return Utilities.round(100, baseRent * 15);
+				case 3: return Utilities.round(1000, baseRent * 35);
+				case 4: return Utilities.round(1000, baseRent * 42);
+				case 5: return Utilities.round(1000, baseRent * 50);
 				default: return 0;
 			}
 		}
@@ -60,11 +51,11 @@ public class StreetSpace extends BuyableSpace {
 	 * @return the purchasing price
 	 */
 	public double getPurchasePrice() {
-		return round(100, baseRent * 12);
+		return Utilities.round(100, baseRent * 12);
 	}
 	
 	public double getHousePrice() {
-		return round(100, baseRent * 8);
+		return Utilities.round(100, baseRent * 8);
 	}
 	/**
 	 * @param baseRent the baseRent to set
@@ -97,9 +88,5 @@ public class StreetSpace extends BuyableSpace {
 	
 	public void removeHouse() {
 		this.housesCount --;
-	}
-	
-	private double round(double multiple, double value) {
-		return value - (value % multiple);
 	}
 }

@@ -3,7 +3,7 @@ package de.unikiel.programmierpraktikum.monopoly.model;
 import java.io.Serializable;
 
 /**
- * Absctract class describing all chance cards, community or chance.
+ * Abstract class describing all chance cards, community or chance.
  * 
  * @author Johan v. Forstner, Miriam Scharnke
  */

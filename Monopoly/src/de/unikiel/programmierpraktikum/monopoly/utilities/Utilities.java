@@ -22,6 +22,8 @@ import android.view.View;
  * 
  */
 public class Utilities {
+	private static DecimalFormat moneyFormat = new DecimalFormat("#,##0 eV");
+	
 	/**
 	 * Calculate a random integer
 	 * 
@@ -204,7 +206,7 @@ public class Utilities {
 	 *         game
 	 */
 	public static DecimalFormat moneyFormat() {
-		return new DecimalFormat("#,##0 eV");
+		return moneyFormat;
 	}
 
 	/**
@@ -269,5 +271,17 @@ public class Utilities {
 			titleCase.append(c);
 		}
 		return titleCase.toString();
+	}
+	
+	
+	/**
+	 * Rounds a number to a multiple of another number
+	 * 
+	 * @param multiple the multiple to which the number should be rounded
+	 * @param value the number to round
+	 * @return the rounded number
+	 */
+	public static double round(double multiple, double value) {
+		return value - (value % multiple);
 	}
 }

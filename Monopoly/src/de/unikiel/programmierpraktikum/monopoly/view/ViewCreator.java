@@ -34,6 +34,15 @@ public class ViewCreator {
 		this.inflater = activity.getLayoutInflater();
 	}
 
+	/**
+	 * Refresh all the texts and images shown on a {@link View} returned by
+	 * {@link createSpaceView}
+	 * 
+	 * @param space
+	 *            the {@link Space} to use for all the values
+	 * @param spaceView
+	 *            a view originally returned by {@link createSpaceView}
+	 */
 	public void refreshSpaceView(Space space, View spaceView) {
 		DecimalFormat format = Utilities.moneyFormat();
 		if (space instanceof GoSpace) {
@@ -66,7 +75,7 @@ public class ViewCreator {
 
 			TextView price = (TextView) spaceView.findViewById(R.id.txtPrice);
 			price.setText(format.format(station.getPurchasePrice()));
-			
+
 			setBuyableSpaceOwnerImage((BuyableSpace) space, spaceView);
 		} else if (space instanceof UtilitySpace) {
 			UtilitySpace utility = (UtilitySpace) space;
@@ -76,7 +85,7 @@ public class ViewCreator {
 
 			TextView price = (TextView) spaceView.findViewById(R.id.txtPrice);
 			price.setText(format.format(utility.getPurchasePrice()));
-			
+
 			setBuyableSpaceOwnerImage((BuyableSpace) space, spaceView);
 		} else if (space instanceof StreetSpace) {
 			StreetSpace street = (StreetSpace) space;
@@ -92,13 +101,17 @@ public class ViewCreator {
 					.getCategory()));
 
 			setBuyableSpaceOwnerImage((BuyableSpace) space, spaceView);
-			
-			ImageView house1 = (ImageView) spaceView.findViewById(R.id.imgHouse1);
-			ImageView house2 = (ImageView) spaceView.findViewById(R.id.imgHouse2);
-			ImageView house3 = (ImageView) spaceView.findViewById(R.id.imgHouse3);
-			ImageView house4 = (ImageView) spaceView.findViewById(R.id.imgHouse4);
+
+			ImageView house1 = (ImageView) spaceView
+					.findViewById(R.id.imgHouse1);
+			ImageView house2 = (ImageView) spaceView
+					.findViewById(R.id.imgHouse2);
+			ImageView house3 = (ImageView) spaceView
+					.findViewById(R.id.imgHouse3);
+			ImageView house4 = (ImageView) spaceView
+					.findViewById(R.id.imgHouse4);
 			ImageView hotel = (ImageView) spaceView.findViewById(R.id.imgHotel);
-			
+
 			house1.setVisibility(houseVisibility(street, 1));
 			house2.setVisibility(houseVisibility(street, 2));
 			house3.setVisibility(houseVisibility(street, 3));
@@ -106,15 +119,43 @@ public class ViewCreator {
 			hotel.setVisibility(hotelVisibility(street));
 		}
 	}
-	
+
+	/**
+	 * Checks if a space has a hotel and returns the visibility of the
+	 * corresponding ImageView.
+	 * 
+	 * @param space
+	 *            the space to use
+	 * @return {@link View#VISIBLE} or {@link View#INVISIBLE}
+	 */
 	private int hotelVisibility(StreetSpace space) {
 		return Utilities.visibility(space.getHotelCount() == 1);
 	}
 
+	/**
+	 * Checks if a space has a minimum number of houses and returns the
+	 * visibility of the corresponding ImageView.
+	 * 
+	 * @param space
+	 *            the space to use
+	 * @param num
+	 *            the minimum house number
+	 * @return {@link View#VISIBLE} or {@link View#INVISIBLE}
+	 */
 	private int houseVisibility(StreetSpace space, int num) {
 		return Utilities.visibility(space.getRealHousesCount() >= num);
 	}
 
+	/**
+	 * Creates a View representing a space on the field.
+	 * 
+	 * @param space
+	 *            the Space to use
+	 * @param container
+	 *            a {@link ViewGroup} where the View will be attached later
+	 *            (needed to calculate the right LayoutParams)
+	 * @return a View representing the given Space
+	 */
 	public View createSpaceView(Space space, ViewGroup container) {
 		View spaceView = null;
 		if (space instanceof GoSpace) {
@@ -154,14 +195,23 @@ public class ViewCreator {
 		refreshSpaceView(space, spaceView);
 		return spaceView;
 	}
-	
+
+	/**
+	 * Puts an image of the owner's peg on the View of a {@link BuyableSpace}
+	 * 
+	 * @param space
+	 *            a {@link BuyableSpace}
+	 * @param spaceView
+	 *            the View corresponding to this space
+	 */
 	private void setBuyableSpaceOwnerImage(BuyableSpace space, View spaceView) {
 		ImageView owner = (ImageView) spaceView.findViewById(R.id.owner);
 		ImageView ownerBg = (ImageView) spaceView.findViewById(R.id.owner_bg);
 		if (space.getOwner() != null) {
 			owner.setImageResource(Utilities.getPegDrawable(space.getOwner()
 					.getPeg()));
-			ownerBg.setImageResource(Utilities.getCircleDrawable(space.getOwner().getIndex()));
+			ownerBg.setImageResource(Utilities.getCircleDrawable(space
+					.getOwner().getIndex()));
 		}
 	}
 }

@@ -158,14 +158,6 @@ public class Player implements Serializable {
 		return property;
 	}
 
-	/**
-	 * @param property
-	 *            the property to set
-	 */
-	public void setProperty(List<Space> property) {
-		this.property = property;
-	}
-
 	public boolean isAbleToBuyHouse(StreetSpace space, Game game) {
 		Category category = space.getCategory();
 		int maxHouseCount = 0;

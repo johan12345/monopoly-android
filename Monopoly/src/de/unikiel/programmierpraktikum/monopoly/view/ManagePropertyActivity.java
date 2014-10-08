@@ -257,6 +257,16 @@ public class ManagePropertyActivity extends Activity {
 			return view;
 		}
 
+		/**
+		 * Calculates if a house ImageView should be visible or not
+		 * 
+		 * @param space
+		 *            the Space to use
+		 * @param num
+		 *            the number of the house to check
+		 * @return {@link View#VISIBLE} or {@link View#INVISIBLE}, depending on
+		 *         if the view should be visible or not
+		 */
 		private int houseVisibility(BuyableSpace space, int num) {
 			if (space instanceof StreetSpace) {
 				return Utilities.visibility(((StreetSpace) space)
@@ -266,6 +276,14 @@ public class ManagePropertyActivity extends Activity {
 			}
 		}
 
+		/**
+		 * Calculates if a hotel ImageView should be visible or not
+		 * 
+		 * @param space
+		 *            the Space to use
+		 * @return {@link View#VISIBLE} or {@link View#INVISIBLE}, depending on
+		 *         if the view should be visible or not
+		 */
 		private int hotelVisibility(BuyableSpace space) {
 			if (space instanceof StreetSpace) {
 				return Utilities.visibility(((StreetSpace) space)
@@ -293,6 +311,16 @@ public class ManagePropertyActivity extends Activity {
 			return catNumber(a).compareTo(catNumber(b));
 		}
 
+		/**
+		 * Returns a number corresponding to the type of space given. For a
+		 * {@link StreetSpace}, it equals {@link StreetSpace#Category#ordinal()}
+		 * , otherwise returns predefined negative numbers corresponding to the
+		 * type of space.
+		 * 
+		 * @param space
+		 *            the space
+		 * @return number corresponding to the space's type
+		 */
 		private Integer catNumber(Space space) {
 			if (space instanceof StreetSpace)
 				return ((StreetSpace) space).getCategory().ordinal();
