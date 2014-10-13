@@ -224,7 +224,10 @@ public class PlayerController implements Serializable {
 	 */
 	public void executeChanceCard(ChanceCard card) throws LackOfMoneyException {
 		if (card instanceof PayChanceCard) {
-			player.pay(((PayChanceCard) card).getAmount());
+			if (((PayChanceCard) card).getAmount() > 0)
+				player.pay(((PayChanceCard) card).getAmount());
+			else
+				player.earn(- ((PayChanceCard) card).getAmount());
 		} else if (card instanceof GoToJailChanceCard) {
 			goToJail();
 		} else if (card instanceof MoveToChanceCard) {
@@ -300,7 +303,10 @@ public class PlayerController implements Serializable {
 	 */
 	public void payPaySpace() throws LackOfMoneyException, WrongSpaceException {
 		if (getCurrentSpace() instanceof PaySpace) {
-			player.pay(((PaySpace) getCurrentSpace()).getAmount());
+			if (((PaySpace) getCurrentSpace()).getAmount() > 0)
+				player.pay(((PaySpace) getCurrentSpace()).getAmount());
+			else
+				player.earn(- ((PaySpace) getCurrentSpace()).getAmount());
 		} else {
 			throw new WrongSpaceException();
 		}
