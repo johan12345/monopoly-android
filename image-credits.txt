@@ -1,4 +1,4 @@
-Spielfiguren:
+﻿Spielfiguren:
 Albert Einstein http://en.wikipedia.org/wiki/File:Einstein_tongue.jpg (© Arthur Sasse, UPI)
 Emmy Noether http://www.tollmien.com/noetherfotos.html
 Erwin Schrödinger http://commons.wikimedia.org/wiki/File:Schrodinger.jpg (Public Domain)
@@ -9,3 +9,5 @@ Richard Feynman http://blogs.scientificamerican.com/oscillator/2013/07/27/feynma
 Stephen Hawking http://pjsaunders.blogspot.de/2013/09/stephen-hawking-is-great-scientist-but.html
 Wolfgang Pauli http://commons.wikimedia.org/wiki/File:Pauli.jpg (Public Domain)
 Werner Heisenberg http://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild183-R57262,_Werner_Heisenberg.jpg (Bundesarchiv, Bild183-R57262 / CC-BY-SA)
+
+App Icon: https://www.flickr.com/photos/carolblondon/4380094915/
